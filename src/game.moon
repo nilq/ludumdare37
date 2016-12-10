@@ -1,16 +1,30 @@
-love.graphics.setBackgroundColor 255, 255, 255
+export gamera = require "kit/lib/gamera"
 ----------------------------------
 -- the game state
 ----------------------------------
 export game = {
   game_objects: {}
+  ----------------------------------
+  -- specifics - references
+  ----------------------------------
+  sheep: {}
   scale: 32
+
+  world_w: 800
+  world_h: 600
 }
 
 game.load = ->
   with game
-    .camera = (require "src/camera") 0, 0, 1, 1, 0
+    .camera     = gamera.new 0, 0, .world_w, .world_h
+    .camera\setWindow 0, 0, love.graphics.getWidth!, love.graphics.getHeight!
+
+    .map_camera = gamera.new 0, 0, .world_w, .world_h
+    .map_camera\setWindow love.graphics.getWidth! - 260, 10, 250, 180
+    .map_camera\setScale 0.2
+
     .load_level "assets/levels/room.png"
+    .init_sheep!
 
 game.update = (dt) ->
   ----------------------------------
@@ -23,29 +37,48 @@ game.update = (dt) ->
     for g in *.game_objects
       g\update dt if g.update
 
+      g.x = math.clamp 0, .world_w, g.x if g.x
+      g.y = math.clamp 0, .world_h, g.y if g.y
+
+    if love.keyboard.isDown "right"
+      .map_camera.wx += dt * 200
+      .map_camera.x = .map_camera.wx * -1
+
 game.draw = ->
   with game
-    .camera\set!
-    for g in *.game_objects
-      g\draw! if g.draw
-    .camera\unset!
+    love.graphics.setColor 0, 0, 0
+    love.graphics.rectangle "fill", .map_camera\getWindow!
+
+    .camera\draw ->
+      .draw_stuff!
+    .map_camera\draw ->
+      .draw_stuff!
   ----------------------------------
   -- debug
   ----------------------------------
   fps = string.format "%07.2f", 1 / love.timer.getAverageDelta!
   mem = string.format "%013.4f", collectgarbage "count"
 
-  love.graphics.setColor 0, 0, 0
-
   love.graphics.print "FPS: #{fps}", 0, 0
   love.graphics.print "MEM: #{mem}", 0, 16
+
+game.draw_stuff = ->
+  with game
+    love.graphics.setColor 255, 255, 255
+    love.graphics.rectangle "fill", 0, 0, .world_w, .world_h
+    for g in *.game_objects
+      g\draw! if g.draw
+    ----------------------------------
+    -- camera hacks
+    ----------------------------------
+    --.map_camera.x, .map_camera.y = .camera.x, .camera.y
 
 ----------------------------------
 -- load level from image data
 ----------------------------------
 game.map_stuff = {
   "player": {r: 255, g: 0, b: 0}
-  "computer": {r: 0, g: 255, b: 0}
+  "sheep": {r: 0, g: 255, b: 0}
 }
 
 game.load_level = (path) ->
@@ -62,8 +95,14 @@ game.load_level = (path) ->
           if r == v.r and g == v.g and b == v.b
             .make_entity k, .scale * rx, .scale * ry
 
+
+game.init_sheep = ->
+  with game
+    for s, _ in *.sheep
+      s.leaders[#s.leaders + 1] = .player
+
 game.make_entity = (id, x, y) ->
-  import Player, Computer from require "src/entities"
+  import Player, Sheep from require "src/entities"
 
   switch id
     when "player"
@@ -71,9 +110,11 @@ game.make_entity = (id, x, y) ->
       ----------------------------------
       -- do things with player here ...
       ----------------------------------
+      game.player = player
       table.insert game.game_objects, player
 
-    when "computer"
-      table.insert game.game_objects, Computer x, y
-
+    when "sheep"
+      sheep = Sheep x, y
+      table.insert game.game_objects, sheep
+      table.insert game.sheep,        sheep
 game

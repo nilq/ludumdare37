@@ -1,7 +1,7 @@
 Player   = require "src/entities/player"
-Computer = require "src/entities/computer"
+Sheep = require "src/entities/sheep"
 
 {
   :Player
-  :Computer
+  :Sheep
 }

@@ -30,9 +30,9 @@ do
       end
       do
         local _with_0 = game
-        local ww, wh = _with_0.camera:get_dimension()
-        _with_0.camera.x = math.lerp(_with_0.camera.x, self.x - ww / 2, dt)
-        _with_0.camera.y = math.lerp(_with_0.camera.y, self.y - wh / 2, dt)
+        local wx, wy, ww, wh = _with_0.camera:getWindow()
+        _with_0.camera.x = math.lerp(_with_0.camera.x, wx + self.x + ww / 13, dt)
+        _with_0.camera.y = math.lerp(_with_0.camera.y, wy + self.y + wh / 13, dt)
       end
       if not (0 == math.sign(self.dx)) then
         self.hor_dir = math.sign(self.dx)

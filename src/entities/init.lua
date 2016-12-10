@@ -1,6 +1,6 @@
 local Player = require("src/entities/player")
-local Computer = require("src/entities/computer")
+local Sheep = require("src/entities/sheep")
 return {
   Player = Player,
-  Computer = Computer
+  Sheep = Sheep
 }

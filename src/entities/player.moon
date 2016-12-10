@@ -35,10 +35,10 @@ class
     -- camera stuff
     ----------------------------------
     with game
-      ww, wh = .camera\get_dimension!
+      wx, wy, ww, wh = .camera\getWindow!
 
-      .camera.x = math.lerp .camera.x, @x - ww / 2, dt
-      .camera.y = math.lerp .camera.y, @y - wh / 2, dt
+      .camera.x = math.lerp .camera.x, wx + @x + ww / 13, dt
+      .camera.y = math.lerp .camera.y, wy + @y + wh / 13, dt
     ----------------------------------
     -- sprite calculations
     ----------------------------------
