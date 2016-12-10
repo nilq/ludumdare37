@@ -17,11 +17,10 @@ class Bullet
       if c.other.enemy
         c.other\die!
 
-
         for i, v in ipairs game.game_objects
           table.remove game.game_objects, i if v == @
 
-        world\remove @
+        world\remove @ if world\hasItem @
 
   draw: =>
     with love.graphics

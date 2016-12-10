@@ -45,7 +45,7 @@ game.update = function(dt)
           g.x = math.clamp(0, game.world_w - g.w, g.x)
         end
         if g.y then
-          g.y = math.clamp(0, game.world_h - g.h * 2, g.y)
+          g.y = math.clamp(-g.h, game.world_h - g.h * 2, g.y)
         end
         _continue_0 = true
       until true

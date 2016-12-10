@@ -49,7 +49,7 @@ game.update = (dt) ->
       g\update dt if g.update
 
       g.x = math.clamp 0, .world_w - g.w, g.x if g.x
-      g.y = math.clamp 0, .world_h - g.h * 2, g.y if g.y
+      g.y = math.clamp -g.h, .world_h - g.h * 2, g.y if g.y
 
     for b in *.bullets
       b.x += b.dx

@@ -7,6 +7,8 @@ bump   = require("kit/lib/bump")
 
 world  = bump.newWorld()
 
+love.graphics.setBackgroundColor(255, 255, 255, 255)
+
 function love.run()
   local dt = 0
 
