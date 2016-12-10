@@ -32,7 +32,7 @@ class
     @sprite = game.sprites.gun
     @w, @h  = @sprite\getWidth!, @sprite\getHeight!
 
-    @ammo   = 10
+    @ammo   = 30
     @force  = 400
     @range  = 60  -- rotation stuff
     @damage = 50

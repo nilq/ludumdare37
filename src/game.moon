@@ -1,4 +1,5 @@
 export gamera        = require "kit/lib/gamera"
+math.randomseed os.time!
 ----------------------------------
 -- the game state
 ----------------------------------
@@ -17,10 +18,22 @@ export game = {
 
   world_w: 350
   world_h: 200
+
+  wave: 1
+  wave_thugs: 0
+
+  t: 0
+  wave_t: 3
+  new_wave: false
 }
 
 game.load = ->
   with game
+    .game_objects = {}
+    .player       = {}
+    .sheep        = {}
+    .enemies      = {}
+
     .camera     = gamera.new 0, 0, .world_w, .world_h
     .camera\setWindow 0, 0, love.graphics.getWidth!, love.graphics.getHeight!
     .camera\setScale 3
@@ -56,6 +69,7 @@ game.load = ->
     }
 
     .load_level "assets/levels/room.png"
+    .load_level "assets/levels/waves/wave#{.wave}.png"
     .init_stuff!
 
 game.update = (dt) ->
@@ -77,6 +91,20 @@ game.update = (dt) ->
     for b in *.bullets
       b.x += b.dx
       b.y += b.dy
+
+    if .wave_thugs == 0 and not .new_wave
+      .t        = .wave_t
+      .new_wave = true
+
+    if .new_wave
+      .t -= dt
+
+      if .t <= 0
+        .wave += 1
+        .new_wave = false
+
+        .load_level "assets/levels/waves/wave#{.wave}.png"
+        .init_stuff!
 
 game.draw = ->
   with game
@@ -143,6 +171,19 @@ game.draw_hud = ->
       .setColor 0, 0, 0
       .print "#{v.ammo}/30", 10 + (i - 1) * 74 - 5 + 32 + sprite\getWidth! / 2 - 5, love.graphics.getHeight! - 74 - 5 + 32 + sprite\getHeight! / 2 if v.type == "gun"
 
+    text = ""
+    if game.new_wave
+      text = "#{string.format "%02.2f", game.t} SECONDS UNTIL NEXT WAVE"
+    else
+      text = "WAVE: #{game.wave}"
+
+    .setColor 200, 200, 200
+    .rectangle "fill", .getWidth! / 2 - (.getFont!\getWidth text) / 2 - 5, 15, (.getFont!\getWidth text) + 5, 20
+
+    .setColor 0, 0, 0
+    .print text, .getWidth! / 2 - (.getFont!\getWidth text) / 2, 20
+
+
 ----------------------------------
 -- load level from image data
 ----------------------------------
@@ -154,6 +195,8 @@ game.map_stuff = {
 
 game.load_level = (path) ->
   with game
+    .enemies = {}
+
     image = love.image.newImageData path
 
     for x = 1, image\getWidth!
@@ -197,6 +240,8 @@ game.make_entity = (id, x, y) ->
       enemy = Enemy x, y
       table.insert game.game_objects, enemy
       table.insert game.enemies,      enemy
+
+      game.wave_thugs += 1
 
 love.mousepressed = (x, y, button) ->
   with game

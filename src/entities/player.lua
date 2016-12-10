@@ -10,7 +10,7 @@ do
         self.grow_t = self.grow_t - dt
         if self.grow_t <= 0 then
           self.naked = false
-          self.sprite = game.sprites.sheep
+          self.sprite = game.sprites.player
         end
       end
       if love.keyboard.isDown("right") then
@@ -71,6 +71,9 @@ do
       end
     end,
     key_press = function(self, key)
+      if self.dead then
+        return 
+      end
       if key == "c" then
         return self.tools[self.current]:fire()
       else
@@ -99,7 +102,7 @@ do
       self.current = 1
       self.dead = false
       self.naked = false
-      self.grow_time = 20
+      self.grow_time = 10
       self.grow_t = 0
       self.health = 100
     end,

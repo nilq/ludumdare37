@@ -32,7 +32,7 @@ class
     @dead  = false
     @naked = false
 
-    @grow_time = 20
+    @grow_time = 10
     @grow_t    = 0
 
     ----------------------------------
@@ -101,6 +101,8 @@ class
       @tools[@current]\draw!
 
   key_press: (key) =>
+    return if @dead
+
     if key == "c"
       @tools[@current]\fire!
     else

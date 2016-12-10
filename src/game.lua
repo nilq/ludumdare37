@@ -1,4 +1,5 @@
 gamera = require("kit/lib/gamera")
+math.randomseed(os.time())
 game = {
   game_objects = { },
   sheep = { },
@@ -7,10 +8,19 @@ game = {
   sprites = { },
   scale = 32,
   world_w = 350,
-  world_h = 200
+  world_h = 200,
+  wave = 1,
+  wave_thugs = 0,
+  t = 0,
+  wave_t = 3,
+  new_wave = false
 }
 game.load = function()
   do
+    game.game_objects = { }
+    game.player = { }
+    game.sheep = { }
+    game.enemies = { }
     game.camera = gamera.new(0, 0, game.world_w, game.world_h)
     game.camera:setWindow(0, 0, love.graphics.getWidth(), love.graphics.getHeight())
     game.camera:setScale(3)
@@ -37,6 +47,7 @@ game.load = function()
       gun = love.graphics.newImage("assets/sprites/guns/gun.png")
     }
     game.load_level("assets/levels/room.png")
+    game.load_level("assets/levels/waves/wave" .. tostring(game.wave) .. ".png")
     game.init_stuff()
     return game
   end
@@ -75,6 +86,19 @@ game.update = function(dt)
       local b = _list_1[_index_0]
       b.x = b.x + b.dx
       b.y = b.y + b.dy
+    end
+    if game.wave_thugs == 0 and not game.new_wave then
+      game.t = game.wave_t
+      game.new_wave = true
+    end
+    if game.new_wave then
+      game.t = game.t - dt
+      if game.t <= 0 then
+        game.wave = game.wave + 1
+        game.new_wave = false
+        game.load_level("assets/levels/waves/wave" .. tostring(game.wave) .. ".png")
+        game.init_stuff()
+      end
     end
     return game
   end
@@ -155,6 +179,16 @@ game.draw_hud = function()
         _with_0.print(tostring(v.ammo) .. "/30", 10 + (i - 1) * 74 - 5 + 32 + sprite:getWidth() / 2 - 5, love.graphics.getHeight() - 74 - 5 + 32 + sprite:getHeight() / 2)
       end
     end
+    local text = ""
+    if game.new_wave then
+      text = tostring(string.format("%02.2f", game.t)) .. " SECONDS UNTIL NEXT WAVE"
+    else
+      text = "WAVE: " .. tostring(game.wave)
+    end
+    _with_0.setColor(200, 200, 200)
+    _with_0.rectangle("fill", _with_0.getWidth() / 2 - (_with_0.getFont():getWidth(text)) / 2 - 5, 15, (_with_0.getFont():getWidth(text)) + 5, 20)
+    _with_0.setColor(0, 0, 0)
+    _with_0.print(text, _with_0.getWidth() / 2 - (_with_0.getFont():getWidth(text)) / 2, 20)
     return _with_0
   end
 end
@@ -177,6 +211,7 @@ game.map_stuff = {
 }
 game.load_level = function(path)
   do
+    game.enemies = { }
     local image = love.image.newImageData(path)
     for x = 1, image:getWidth() do
       for y = 1, image:getHeight() do
@@ -227,7 +262,8 @@ game.make_entity = function(id, x, y)
   elseif "enemy" == _exp_0 then
     local enemy = Enemy(x, y)
     table.insert(game.game_objects, enemy)
-    return table.insert(game.enemies, enemy)
+    table.insert(game.enemies, enemy)
+    game.wave_thugs = game.wave_thugs + 1
   end
 end
 love.mousepressed = function(x, y, button)

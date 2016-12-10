@@ -99,6 +99,8 @@ class
 
     world\remove @
 
+    game.wave_thugs -= 1
+
   cut: =>
     unless @naked
       @sprite = game.sprites.thug_cut
@@ -113,6 +115,7 @@ class
         table.remove game.enemies, i if v == @
 
       world\remove @
+      game.wave_thugs -= 1
 
   draw: =>
     with love.graphics
