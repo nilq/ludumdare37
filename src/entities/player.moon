@@ -16,12 +16,18 @@ class
     world\add @, @x, @y, @w, @h
     @gun = Gun @x, @y, @w / 1.1, @h / 1.1, @w / 2.2, @h / 1.1, @ -- complete mess
 
-  update: (dt) =>
-    @dx += @acc * dt if love.keyboard.isDown "d"
-    @dx -= @acc * dt if love.keyboard.isDown "a"
+    ----------------------------------
+    -- things with indicators
+    ----------------------------------
+    @health = 100
+    @ammo   = @gun.ammo
 
-    @dy += @acc * dt if love.keyboard.isDown "s"
-    @dy -= @acc * dt if love.keyboard.isDown "w"
+  update: (dt) =>
+    @dx += @acc * dt if love.keyboard.isDown "right"
+    @dx -= @acc * dt if love.keyboard.isDown "left"
+
+    @dy += @acc * dt if love.keyboard.isDown "down"
+    @dy -= @acc * dt if love.keyboard.isDown "up"
 
     @dx -= (@dx / @frc) * dt
     @dy -= (@dy / @frc) * dt
@@ -44,8 +50,8 @@ class
     with game
       wx, wy, ww, wh = .camera\getWorld!
 
-      .camera.x = math.lerp .camera.x, wx + @x + ww / 4, dt
-      .camera.y = math.lerp .camera.y, wy + @y + wh / 4, dt
+      .camera.x = math.lerp .camera.x, @x, dt
+      .camera.y = math.lerp .camera.y, @y, dt
 
       @gun\update dt
       @gun.dir = @hor_dir or 1
@@ -57,5 +63,6 @@ class
 
       @gun\draw!
 
-  mouse_press: (x, y, button) =>
-    @gun\fire!
+  key_press: (key) =>
+    if key == "c"
+      @gun\fire!

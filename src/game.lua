@@ -153,4 +153,16 @@ love.mousepressed = function(x, y, button)
     return game
   end
 end
+love.keypressed = function(key)
+  do
+    local _list_0 = game.game_objects
+    for _index_0 = 1, #_list_0 do
+      local g = _list_0[_index_0]
+      if g.key_press then
+        g:key_press(key)
+      end
+    end
+    return game
+  end
+end
 return game

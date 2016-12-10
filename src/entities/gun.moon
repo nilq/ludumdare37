@@ -20,9 +20,11 @@ class
     @w, @h  = @sprite\getWidth!, @sprite\getHeight!
 
     @ammo   = 10
-    @force  = 100
+    @force  = 400
     @range  = 60  -- rotation stuff
     @damage = 50
+
+    @ro = 0 -- recoil offset
 
     @rotation = 0
 
@@ -31,8 +33,12 @@ class
   update: (dt) =>
     @x = @mother.x + @ox unless @dir == -1
     @x = @mother.x + @ox1 * @dir unless @dir == 1
+    @x += @ro
 
     @y = @mother.y + @oy
+
+    @rotation = math.lerp @rotation, 0, dt * 10
+    @ro       = math.lerp @ro, 0, dt * 10
 
   draw: =>
     with love.graphics
@@ -40,7 +46,10 @@ class
       .draw @sprite, @x + @w / 2, @y + @h / 2, @rotation, 1 * @dir, 1, @w / 2, @h / 2
 
   fire: =>
-    bullet = Bullet @x + @w / 2, @y + @h / 2, @rotation, @force, @damage
-    table.insert game.game_objects, bullet
+    unless @ammo <= 0
+      bullet = Bullet @x + @w / 2, @y + @h / 2, @rotation, @force * @dir, @damage
+      table.insert game.game_objects, bullet
 
-    @ammo -= 1
+      @rotation -= 0.75 * @dir
+      @ro       -= 2    * @dir
+      @ammo     -= 1

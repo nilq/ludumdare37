@@ -129,4 +129,9 @@ love.mousepressed = (x, y, button) ->
     for g in *.game_objects
       g\mouse_press x, y, button if g.mouse_press
 
+love.keypressed = (key) ->
+  with game
+    for g in *.game_objects
+      g\key_press key if g.key_press
+
 game
