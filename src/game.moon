@@ -43,7 +43,9 @@ game.load = ->
       player: love.graphics.newImage "assets/sprites/player/player_stand.png"
 
       thug: love.graphics.newImage "assets/sprites/misc/thug.png"
+      thug_cut: love.graphics.newImage "assets/sprites/misc/thug_cut.png"
       thug_dead: love.graphics.newImage "assets/sprites/misc/dead_thug.png"
+      thug_cut_dead: love.graphics.newImage "assets/sprites/misc/dead_thug_naked.png"
 
       scissor: love.graphics.newImage "assets/sprites/guns/scissor.png"
       scissor_cut: love.graphics.newImage "assets/sprites/guns/scissor_cut.png"

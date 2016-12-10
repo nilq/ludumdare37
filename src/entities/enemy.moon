@@ -22,7 +22,14 @@ class
     -- enemy stuff
     ----------------------------------
     @enemy = true
-    @dead
+    @dead  = false
+    @naked = false
+
+    ----------------------------------
+    -- easter egg. easter egg right here.. idk
+    ----------------------------------
+    @grow_time = 1000
+    @grow_t    = 0
 
     @hor_dir = 1
 
@@ -30,6 +37,13 @@ class
 
   update: (dt) =>
     return if @dead
+
+    if @naked
+      @grow_t -= dt
+
+      if @grow_t <= 0
+        @naked = false
+        @sprite = game.sprites.sheep
 
     @lead = false
     @t   += dt
@@ -73,6 +87,21 @@ class
       table.remove game.enemies, i if v == @
 
     world\remove @
+
+  cut: =>
+    unless @naked
+      @sprite = game.sprites.thug_cut
+      @grow_t = @grow_time
+
+      @naked = true
+    else
+      @dead   = true
+      @sprite = game.sprites.thug_cut_dead
+
+      for i, v in ipairs game.enemies
+        table.remove game.enemies, i if v == @
+
+      world\remove @
 
   draw: =>
     with love.graphics

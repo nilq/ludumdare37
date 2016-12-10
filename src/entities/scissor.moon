@@ -6,7 +6,7 @@ class
     @sprite = game.sprites.scissor
     @w, @h  = @sprite\getWidth!, @sprite\getHeight!
 
-    @cut_time = 0.15
+    @cut_time = 0.35
     @t        = 0
     @cut      = false
     @ro       = 0
@@ -38,6 +38,8 @@ class
       .draw @sprite, @x + @w / 2, @y + @h / 2, @rotation, 1 * @dir, 1, @w / 2, @h / 2
 
   fire: =>
+    return if @cut
+
     @rotation -= 0.75 * @dir
     @ro       -= 2    * @dir
 
@@ -51,4 +53,11 @@ class
 
       if d < s.w
         s\cut!
-        break
+        return
+
+    for s, _ in *game.enemies
+      d = math.sqrt (@x - s.x)^2 + (@y - s.y)^2
+
+      if d < s.w
+        s\cut!
+        return
