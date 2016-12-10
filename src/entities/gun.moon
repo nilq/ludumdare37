@@ -5,9 +5,23 @@ class Bullet
   new: (@x, @y, @r, @force, @damage) =>
     @w, @h = 2, 2
 
+    world\add @, @x, @y, @w, @h
+
   update: (dt) =>
-    @x += dt * @force * math.cos @r
-    @y += dt * @force * math.sin @r
+    dx = dt * @force * math.cos @r
+    dy = dt * @force * math.sin @r
+
+    @x, @y, @cols = world\move @, @x + dx, @y + dy, -> "cross"
+
+    for c, _ in *@cols
+      if c.other.enemy
+        c.other\die!
+
+
+        for i, v in ipairs game.game_objects
+          table.remove game.game_objects, i if v == @
+
+        world\remove @
 
   draw: =>
     with love.graphics

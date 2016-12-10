@@ -5,8 +5,8 @@ game = {
   enemies = { },
   bullets = { },
   scale = 32,
-  world_w = 500,
-  world_h = 400
+  world_w = 250,
+  world_h = 200
 }
 game.load = function()
   do
@@ -31,15 +31,26 @@ game.update = function(dt)
     end)
     local _list_0 = game.game_objects
     for _index_0 = 1, #_list_0 do
-      local g = _list_0[_index_0]
-      if g.update then
-        g:update(dt)
-      end
-      if g.x then
-        g.x = math.clamp(0, game.world_w - g.w, g.x)
-      end
-      if g.y then
-        g.y = math.clamp(0, game.world_h - g.h * 2, g.y)
+      local _continue_0 = false
+      repeat
+        local g = _list_0[_index_0]
+        if g == nil then
+          _continue_0 = true
+          break
+        end
+        if g.update then
+          g:update(dt)
+        end
+        if g.x then
+          g.x = math.clamp(0, game.world_w - g.w, g.x)
+        end
+        if g.y then
+          g.y = math.clamp(0, game.world_h - g.h * 2, g.y)
+        end
+        _continue_0 = true
+      until true
+      if not _continue_0 then
+        break
       end
     end
     local _list_1 = game.bullets
@@ -75,9 +86,20 @@ game.draw_stuff = function()
     love.graphics.draw(game.grass_sprite, game.grass_quad, 0, 0)
     local _list_0 = game.game_objects
     for _index_0 = 1, #_list_0 do
-      local g = _list_0[_index_0]
-      if g.draw then
-        g:draw()
+      local _continue_0 = false
+      repeat
+        local g = _list_0[_index_0]
+        if g == nil then
+          _continue_0 = true
+          break
+        end
+        if g.draw then
+          g:draw()
+        end
+        _continue_0 = true
+      until true
+      if not _continue_0 then
+        break
       end
     end
     local _list_1 = game.bullets

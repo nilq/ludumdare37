@@ -18,11 +18,19 @@ class
     @lead  = false -- being herded ...
     @a     = math.random 0, 360 -- angle in which to move
 
+    ----------------------------------
+    -- enemy stuff
+    ----------------------------------
+    @enemy = true
+    @dead
+
     @hor_dir = 1
 
     world\add @, @x, @y, @w, @h
 
   update: (dt) =>
+    return if @dead
+
     @lead = false
     @t   += dt
     for t, i in *@leaders
@@ -56,6 +64,15 @@ class
       else
         unless c.normal.x == 0
           @dx = 0
+
+  die: =>
+    @dead   = true
+    @sprite = love.graphics.newImage "assets/sprites/misc/dead_thug.png"
+
+    for i, v in ipairs game.enemies
+      table.remove game.enemies, i if v == @
+
+    world\remove @
 
   draw: =>
     with love.graphics

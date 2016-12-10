@@ -13,8 +13,8 @@ export game = {
 
   scale: 32
 
-  world_w: 500
-  world_h: 400
+  world_w: 250
+  world_h: 200
 }
 
 game.load = ->
@@ -44,6 +44,8 @@ game.update = (dt) ->
       a.y < b.y
 
     for g in *.game_objects
+      continue if g == nil
+
       g\update dt if g.update
 
       g.x = math.clamp 0, .world_w - g.w, g.x if g.x
@@ -80,6 +82,7 @@ game.draw_stuff = ->
     love.graphics.draw .grass_sprite, .grass_quad, 0, 0
 
     for g in *.game_objects
+      continue if g == nil
       g\draw! if g.draw
 
     for b in *.bullets
