@@ -9,6 +9,7 @@ export game = {
 
 game.load = ->
   with game
+    .camera = (require "src/camera") 0, 0, 1, 1, 0
     .load_level "assets/levels/room.png"
 
 game.update = (dt) ->
@@ -18,8 +19,10 @@ game.update = (dt) ->
 
 game.draw = ->
   with game
+    .camera\set!
     for g in *.game_objects
       g\draw! if g.draw
+    .camera\unset!
   ----------------------------------
   -- debug
   ----------------------------------

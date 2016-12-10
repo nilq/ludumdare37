@@ -31,7 +31,14 @@ class
       else
         unless c.normal.x == 0
           @x = 0
+    ----------------------------------
+    -- camera stuff
+    ----------------------------------
+    with game
+      ww, wh = .camera\get_dimension!
 
+      .camera.x = math.lerp .camera.x, @x - ww / 2, dt
+      .camera.y = math.lerp .camera.y, @y - wh / 2, dt
     ----------------------------------
     -- sprite calculations
     ----------------------------------

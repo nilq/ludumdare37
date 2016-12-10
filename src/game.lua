@@ -5,6 +5,7 @@ game = {
 }
 game.load = function()
   do
+    game.camera = (require("src/camera"))(0, 0, 1, 1, 0)
     game.load_level("assets/levels/room.png")
     return game
   end
@@ -23,6 +24,7 @@ game.update = function(dt)
 end
 game.draw = function()
   do
+    game.camera:set()
     local _list_0 = game.game_objects
     for _index_0 = 1, #_list_0 do
       local g = _list_0[_index_0]
@@ -30,6 +32,7 @@ game.draw = function()
         g:draw()
       end
     end
+    game.camera:unset()
   end
   local fps = string.format("%07.2f", 1 / love.timer.getAverageDelta())
   local mem = string.format("%013.4f", collectgarbage("count"))
