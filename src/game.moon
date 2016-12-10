@@ -90,9 +90,12 @@ game.draw = ->
 
     love.graphics.setColor 0, 0, 0
     love.graphics.rectangle "line", .map_camera\getWindow!
+
+    .draw_hud!
   ----------------------------------
   -- debug
   ----------------------------------
+  love.graphics.setColor 0, 0, 0
   fps = string.format "%07.2f", 1 / love.timer.getAverageDelta!
   mem = string.format "%013.4f", collectgarbage "count"
 
@@ -111,6 +114,31 @@ game.draw_stuff = ->
     for b in *.bullets
       love.graphics.setColor 0, 0, 0
       love.graphics.rectangle "fill", 2, 2, b.x, b.y
+
+game.draw_hud = ->
+  with love.graphics
+    font   = .getFont!
+    for i, v in ipairs game.player.tools
+      font_w = font\getWidth  i
+      font_h = font\getHeight i
+
+      if i == game.player.current
+        .setColor 200, 200, 255
+      else
+        .setColor 200, 200, 200
+
+      .rectangle "fill", 10 + (i - 1) * 74, love.graphics.getHeight! - 74, 64, 64
+
+      .setColor 100, 100, 100
+      .rectangle "fill", 10 + (i - 1) * 74 - 5, love.graphics.getHeight! - 74 - 5, 20, 20
+
+      .setColor 0, 0, 0
+      .print i, 10 + (i - 1) * 74 - 5 + font_w / 3.5, love.graphics.getHeight! - 74 - 5 + font_h / 4.5
+
+      sprite = game.player.tools[i].sprite
+
+      .setColor 255, 255, 255
+      .draw sprite, 10 + (i - 1) * 74 - 5 + 32 + sprite\getWidth! / 2, love.graphics.getHeight! - 74 - 5 + 32 + sprite\getHeight! / 2, 0, 4, 4, sprite\getWidth! / 2, sprite\getHeight! / 2
 
 ----------------------------------
 -- load level from image data
@@ -134,7 +162,6 @@ game.load_level = (path) ->
         for k, v in pairs .map_stuff
           if r == v.r and g == v.g and b == v.b
             .make_entity k, .scale * rx, .scale * ry
-
 
 game.init_stuff = ->
   with game

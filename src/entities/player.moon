@@ -1,5 +1,6 @@
 class
-  Gun = require "src/entities/scissor"
+  Scissor = require "src/entities/scissor"
+  Gun     = require "src/entities/gun"
 
   new: (@x, @y) =>
     @dx = 0
@@ -14,7 +15,16 @@ class
     @w, @h  = @sprite\getWidth!, @sprite\getHeight! * .5
 
     world\add @, @x, @y, @w, @h
-    @gun = Gun @x, @y, @w / 1.1, @h / 1.1, @w / 2.2, @h / 1.1, @ -- complete mess
+
+    ----------------------------------
+    -- Tools
+    ----------------------------------
+    @tools = {
+      [1]: Gun     @x, @y, @w / 1.1, @h / 1.1, @w / 2.2, @h / 1.1, @ -- complete mess
+      [2]: Scissor @x, @y, @w / 1.1, @h / 1.1, @w / 2.2, @h / 1.1, @ -- complete mess
+    }
+
+    @current = 1
 
     ----------------------------------
     -- cut stuff
@@ -29,7 +39,6 @@ class
     -- things with indicators
     ----------------------------------
     @health = 100
-    @ammo   = @gun.ammo
 
   update: (dt) =>
     return if @dead
@@ -71,8 +80,8 @@ class
       .camera.x = math.lerp .camera.x, @x, dt
       .camera.y = math.lerp .camera.y, @y, dt
 
-    @gun\update dt
-    @gun.dir = @hor_dir or 1
+    @tools[@current]\update dt
+    @tools[@current].dir = @hor_dir or 1
 
   cut: =>
     unless @naked
@@ -84,14 +93,16 @@ class
       @dead   = true
       @sprite = game.sprites.player_cut_dead
 
-
   draw: =>
     with love.graphics
       .setColor 255, 255, 255
       .draw @sprite, @x + @w / 2, @y + @h / 2, 0, @hor_dir, 1, @w / 2, @h / 2
 
-      @gun\draw!
+      @tools[@current]\draw!
 
   key_press: (key) =>
     if key == "c"
-      @gun\fire!
+      @tools[@current]\fire!
+    else
+      n = tonumber key
+      @current = n if n

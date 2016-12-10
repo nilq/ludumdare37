@@ -1,6 +1,6 @@
 do
   local _class_0
-  local Gun
+  local Scissor, Gun
   local _base_0 = {
     update = function(self, dt)
       if self.dead then
@@ -48,8 +48,8 @@ do
         _with_0.camera.x = math.lerp(_with_0.camera.x, self.x, dt)
         _with_0.camera.y = math.lerp(_with_0.camera.y, self.y, dt)
       end
-      self.gun:update(dt)
-      self.gun.dir = self.hor_dir or 1
+      self.tools[self.current]:update(dt)
+      self.tools[self.current].dir = self.hor_dir or 1
     end,
     cut = function(self)
       if not (self.naked) then
@@ -66,13 +66,18 @@ do
         local _with_0 = love.graphics
         _with_0.setColor(255, 255, 255)
         _with_0.draw(self.sprite, self.x + self.w / 2, self.y + self.h / 2, 0, self.hor_dir, 1, self.w / 2, self.h / 2)
-        self.gun:draw()
+        self.tools[self.current]:draw()
         return _with_0
       end
     end,
     key_press = function(self, key)
       if key == "c" then
-        return self.gun:fire()
+        return self.tools[self.current]:fire()
+      else
+        local n = tonumber(key)
+        if n then
+          self.current = n
+        end
       end
     end
   }
@@ -87,13 +92,16 @@ do
       self.sprite = game.sprites.player
       self.w, self.h = self.sprite:getWidth(), self.sprite:getHeight() * .5
       world:add(self, self.x, self.y, self.w, self.h)
-      self.gun = Gun(self.x, self.y, self.w / 1.1, self.h / 1.1, self.w / 2.2, self.h / 1.1, self)
+      self.tools = {
+        [1] = Gun(self.x, self.y, self.w / 1.1, self.h / 1.1, self.w / 2.2, self.h / 1.1, self),
+        [2] = Scissor(self.x, self.y, self.w / 1.1, self.h / 1.1, self.w / 2.2, self.h / 1.1, self)
+      }
+      self.current = 1
       self.dead = false
       self.naked = false
       self.grow_time = 20
       self.grow_t = 0
       self.health = 100
-      self.ammo = self.gun.ammo
     end,
     __base = _base_0,
     __name = nil
@@ -107,6 +115,7 @@ do
   })
   _base_0.__class = _class_0
   local self = _class_0
-  Gun = require("src/entities/scissor")
+  Scissor = require("src/entities/scissor")
+  Gun = require("src/entities/gun")
   return _class_0
 end

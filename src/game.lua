@@ -91,7 +91,9 @@ game.draw = function()
     end)
     love.graphics.setColor(0, 0, 0)
     love.graphics.rectangle("line", game.map_camera:getWindow())
+    game.draw_hud()
   end
+  love.graphics.setColor(0, 0, 0)
   local fps = string.format("%07.2f", 1 / love.timer.getAverageDelta())
   local mem = string.format("%013.4f", collectgarbage("count"))
   love.graphics.print("FPS: " .. tostring(fps), 0, 0)
@@ -126,6 +128,30 @@ game.draw_stuff = function()
       love.graphics.rectangle("fill", 2, 2, b.x, b.y)
     end
     return game
+  end
+end
+game.draw_hud = function()
+  do
+    local _with_0 = love.graphics
+    local font = _with_0.getFont()
+    for i, v in ipairs(game.player.tools) do
+      local font_w = font:getWidth(i)
+      local font_h = font:getHeight(i)
+      if i == game.player.current then
+        _with_0.setColor(200, 200, 255)
+      else
+        _with_0.setColor(200, 200, 200)
+      end
+      _with_0.rectangle("fill", 10 + (i - 1) * 74, love.graphics.getHeight() - 74, 64, 64)
+      _with_0.setColor(100, 100, 100)
+      _with_0.rectangle("fill", 10 + (i - 1) * 74 - 5, love.graphics.getHeight() - 74 - 5, 20, 20)
+      _with_0.setColor(0, 0, 0)
+      _with_0.print(i, 10 + (i - 1) * 74 - 5 + font_w / 3.5, love.graphics.getHeight() - 74 - 5 + font_h / 4.5)
+      local sprite = game.player.tools[i].sprite
+      _with_0.setColor(255, 255, 255)
+      _with_0.draw(sprite, 10 + (i - 1) * 74 - 5 + 32 + sprite:getWidth() / 2, love.graphics.getHeight() - 74 - 5 + 32 + sprite:getHeight() / 2, 0, 4, 4, sprite:getWidth() / 2, sprite:getHeight() / 2)
+    end
+    return _with_0
   end
 end
 game.map_stuff = {
