@@ -3,6 +3,16 @@ do
   local Gun
   local _base_0 = {
     update = function(self, dt)
+      if self.dead then
+        return 
+      end
+      if self.naked then
+        self.grow_t = self.grow_t - dt
+        if self.grow_t <= 0 then
+          self.naked = false
+          self.sprite = game.sprites.sheep
+        end
+      end
       if love.keyboard.isDown("right") then
         self.dx = self.dx + (self.acc * dt)
       end
@@ -42,7 +52,14 @@ do
       self.gun.dir = self.hor_dir or 1
     end,
     cut = function(self)
-      return print("how is this even possible?")
+      if not (self.naked) then
+        self.sprite = game.sprites.player_cut
+        self.grow_t = self.grow_time
+        self.naked = true
+      else
+        self.dead = true
+        self.sprite = game.sprites.player_cut_dead
+      end
     end,
     draw = function(self)
       do
@@ -71,6 +88,10 @@ do
       self.w, self.h = self.sprite:getWidth(), self.sprite:getHeight() * .5
       world:add(self, self.x, self.y, self.w, self.h)
       self.gun = Gun(self.x, self.y, self.w / 1.1, self.h / 1.1, self.w / 2.2, self.h / 1.1, self)
+      self.dead = false
+      self.naked = false
+      self.grow_time = 20
+      self.grow_t = 0
       self.health = 100
       self.ammo = self.gun.ammo
     end,

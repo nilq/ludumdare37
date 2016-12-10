@@ -35,22 +35,24 @@ game.load = ->
     .grass_quad = love.graphics.newQuad 0, 0, .world_w, .world_h, .grass_sprite\getWidth!, .grass_sprite\getHeight!
 
     .sprites = {
-      sheep: love.graphics.newImage "assets/sprites/misc/sheep.png"
-      sheep_cut: love.graphics.newImage "assets/sprites/misc/sheep_cut.png"
-      sheep_dead: love.graphics.newImage "assets/sprites/misc/dead_sheep.png"
-      sheep_cut_dead: love.graphics.newImage "assets/sprites/misc/dead_sheep_naked.png"
+      sheep:           love.graphics.newImage "assets/sprites/misc/sheep.png"
+      sheep_cut:       love.graphics.newImage "assets/sprites/misc/sheep_cut.png"
+      sheep_dead:      love.graphics.newImage "assets/sprites/misc/dead_sheep.png"
+      sheep_cut_dead:  love.graphics.newImage "assets/sprites/misc/dead_sheep_naked.png"
 
-      player: love.graphics.newImage "assets/sprites/player/player_stand.png"
+      player:          love.graphics.newImage "assets/sprites/player/player_stand.png"
+      player_cut:      love.graphics.newImage "assets/sprites/player/player_cut.png"
+      player_cut_dead: love.graphics.newImage "assets/sprites/player/player_cut_dead.png"
 
-      thug: love.graphics.newImage "assets/sprites/misc/thug.png"
-      thug_cut: love.graphics.newImage "assets/sprites/misc/thug_cut.png"
-      thug_dead: love.graphics.newImage "assets/sprites/misc/dead_thug.png"
-      thug_cut_dead: love.graphics.newImage "assets/sprites/misc/dead_thug_naked.png"
+      thug:            love.graphics.newImage "assets/sprites/misc/thug.png"
+      thug_cut:        love.graphics.newImage "assets/sprites/misc/thug_cut.png"
+      thug_dead:       love.graphics.newImage "assets/sprites/misc/dead_thug.png"
+      thug_cut_dead:   love.graphics.newImage "assets/sprites/misc/dead_thug_naked.png"
 
-      scissor: love.graphics.newImage "assets/sprites/guns/scissor.png"
-      scissor_cut: love.graphics.newImage "assets/sprites/guns/scissor_cut.png"
+      scissor:         love.graphics.newImage "assets/sprites/guns/scissor.png"
+      scissor_cut:     love.graphics.newImage "assets/sprites/guns/scissor_cut.png"
 
-      gun: love.graphics.newImage "assets/sprites/guns/gun.png"
+      gun:             love.graphics.newImage "assets/sprites/guns/gun.png"
     }
 
     .load_level "assets/levels/room.png"

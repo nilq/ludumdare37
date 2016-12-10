@@ -17,12 +17,30 @@ class
     @gun = Gun @x, @y, @w / 1.1, @h / 1.1, @w / 2.2, @h / 1.1, @ -- complete mess
 
     ----------------------------------
+    -- cut stuff
+    ----------------------------------
+    @dead  = false
+    @naked = false
+
+    @grow_time = 20
+    @grow_t    = 0
+
+    ----------------------------------
     -- things with indicators
     ----------------------------------
     @health = 100
     @ammo   = @gun.ammo
 
   update: (dt) =>
+    return if @dead
+
+    if @naked
+      @grow_t -= dt
+
+      if @grow_t <= 0
+        @naked = false
+        @sprite = game.sprites.sheep
+
     @dx += @acc * dt if love.keyboard.isDown "right"
     @dx -= @acc * dt if love.keyboard.isDown "left"
 
@@ -57,7 +75,15 @@ class
     @gun.dir = @hor_dir or 1
 
   cut: =>
-    print "how is this even possible?"
+    unless @naked
+      @sprite = game.sprites.player_cut
+      @grow_t = @grow_time
+
+      @naked = true
+    else
+      @dead   = true
+      @sprite = game.sprites.player_cut_dead
+
 
   draw: =>
     with love.graphics
