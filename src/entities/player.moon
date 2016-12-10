@@ -50,11 +50,19 @@ class
         @naked = false
         @sprite = game.sprites.player
 
-    @dx += @acc * dt if love.keyboard.isDown "right"
-    @dx -= @acc * dt if love.keyboard.isDown "left"
+    if love.keyboard.isDown "right"
+      @hor_dir = 1
+      @dx     += @acc * dt
 
-    @dy += @acc * dt if love.keyboard.isDown "down"
-    @dy -= @acc * dt if love.keyboard.isDown "up"
+    if love.keyboard.isDown "left"
+      @hor_dir = -1
+      @dx     -= @acc * dt
+
+    if love.keyboard.isDown "down"
+        @dy += @acc * dt
+
+    if love.keyboard.isDown "up"
+      @dy -= @acc * dt
 
     @dx -= (@dx / @frc) * dt
     @dy -= (@dy / @frc) * dt
@@ -107,4 +115,6 @@ class
       @tools[@current]\fire!
     else
       n = tonumber key
-      @current = n if n
+      if n
+        n = math.clamp 1, #@tools, n
+        @current = n

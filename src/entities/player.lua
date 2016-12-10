@@ -14,9 +14,11 @@ do
         end
       end
       if love.keyboard.isDown("right") then
+        self.hor_dir = 1
         self.dx = self.dx + (self.acc * dt)
       end
       if love.keyboard.isDown("left") then
+        self.hor_dir = -1
         self.dx = self.dx - (self.acc * dt)
       end
       if love.keyboard.isDown("down") then
@@ -79,6 +81,7 @@ do
       else
         local n = tonumber(key)
         if n then
+          n = math.clamp(1, #self.tools, n)
           self.current = n
         end
       end

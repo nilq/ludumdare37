@@ -121,7 +121,7 @@ do
       self.grow_time = 1000
       self.grow_t = 0
       self.hor_dir = 1
-      return world:add(self, self.x, self.y, self.w, self.h)
+      return world:add(self, self.x, self.y, self.w, self.h * 2)
     end,
     __base = _base_0,
     __name = nil

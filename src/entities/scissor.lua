@@ -44,7 +44,7 @@ do
         if s == self.mother then
           break
         end
-        local d = math.sqrt((self.x - s.x) ^ 2 + (self.y - s.y) ^ 2)
+        local d = math.sqrt((self.x - (s.x + s.w / 4)) ^ 2 + (self.y - s.y) ^ 2)
         if d < s.w then
           s:cut()
           return 
@@ -56,7 +56,7 @@ do
         if s == self.mother then
           break
         end
-        local d = math.sqrt((self.x - s.x) ^ 2 + (self.y - s.y) ^ 2)
+        local d = math.sqrt((self.x - (s.x + s.w / 4)) ^ 2 + (self.y - s.y) ^ 2)
         if d < s.h then
           s:cut()
           return 

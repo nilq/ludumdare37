@@ -53,7 +53,7 @@ class
     for s, _ in *game.sheep
       break if s == @mother
 
-      d = math.sqrt (@x - s.x)^2 + (@y - s.y)^2
+      d = math.sqrt (@x - (s.x + s.w / 4))^2 + (@y - s.y)^2
 
       if d < s.w
         s\cut!
@@ -62,7 +62,7 @@ class
     for s, _ in *game.enemies
       break if s == @mother
 
-      d = math.sqrt (@x - s.x)^2 + (@y - s.y)^2
+      d = math.sqrt (@x - (s.x + s.w / 4))^2 + (@y - s.y)^2
 
       if d < s.h
         s\cut!

@@ -36,7 +36,7 @@ class
 
     @hor_dir = 1
 
-    world\add @, @x, @y, @w, @h
+    world\add @, @x, @y, @w, @h * 2
 
   update: (dt) =>
     return if @dead
