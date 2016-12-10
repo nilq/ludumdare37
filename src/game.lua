@@ -3,13 +3,15 @@ game = {
   game_objects = { },
   sheep = { },
   scale = 32,
-  world_w = 800,
-  world_h = 600
+  bullets = { },
+  world_w = 500,
+  world_h = 400
 }
 game.load = function()
   do
     game.camera = gamera.new(0, 0, game.world_w, game.world_h)
     game.camera:setWindow(0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+    game.camera:setScale(2)
     game.map_camera = gamera.new(0, 0, game.world_w, game.world_h)
     game.map_camera:setWindow(love.graphics.getWidth() - 260, 10, 250, 180)
     game.map_camera:setScale(0.2)
@@ -30,15 +32,17 @@ game.update = function(dt)
         g:update(dt)
       end
       if g.x then
-        g.x = math.clamp(0, game.world_w, g.x)
+        g.x = math.clamp(0, game.world_w - g.w, g.x)
       end
       if g.y then
-        g.y = math.clamp(0, game.world_h, g.y)
+        g.y = math.clamp(0, game.world_h - g.h * 2, g.y)
       end
     end
-    if love.keyboard.isDown("right") then
-      game.map_camera.wx = game.map_camera.wx + (dt * 200)
-      game.map_camera.x = game.map_camera.wx * -1
+    local _list_1 = game.bullets
+    for _index_0 = 1, #_list_1 do
+      local b = _list_1[_index_0]
+      b.x = b.x + b.dx
+      b.y = b.y + b.dy
     end
     return game
   end
@@ -53,6 +57,8 @@ game.draw = function()
     game.map_camera:draw(function()
       return game.draw_stuff()
     end)
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle("line", game.map_camera:getWindow())
   end
   local fps = string.format("%07.2f", 1 / love.timer.getAverageDelta())
   local mem = string.format("%013.4f", collectgarbage("count"))
@@ -69,6 +75,12 @@ game.draw_stuff = function()
       if g.draw then
         g:draw()
       end
+    end
+    local _list_1 = game.bullets
+    for _index_0 = 1, #_list_1 do
+      local b = _list_1[_index_0]
+      love.graphics.setColor(0, 0, 0)
+      love.graphics.rectangle("fill", 2, 2, b.x, b.y)
     end
     return game
   end
@@ -127,6 +139,18 @@ game.make_entity = function(id, x, y)
     local sheep = Sheep(x, y)
     table.insert(game.game_objects, sheep)
     return table.insert(game.sheep, sheep)
+  end
+end
+love.mousepressed = function(x, y, button)
+  do
+    local _list_0 = game.game_objects
+    for _index_0 = 1, #_list_0 do
+      local g = _list_0[_index_0]
+      if g.mouse_press then
+        g:mouse_press(x, y, button)
+      end
+    end
+    return game
   end
 end
 return game

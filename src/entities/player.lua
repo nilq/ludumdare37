@@ -1,5 +1,6 @@
 do
   local _class_0
+  local Gun
   local _base_0 = {
     update = function(self, dt)
       if love.keyboard.isDown("d") then
@@ -28,23 +29,30 @@ do
           end
         end
       end
-      do
-        local _with_0 = game
-        local wx, wy, ww, wh = _with_0.camera:getWindow()
-        _with_0.camera.x = math.lerp(_with_0.camera.x, wx + self.x + ww / 13, dt)
-        _with_0.camera.y = math.lerp(_with_0.camera.y, wy + self.y + wh / 13, dt)
-      end
       if not (0 == math.sign(self.dx)) then
         self.hor_dir = math.sign(self.dx)
+      end
+      do
+        local _with_0 = game
+        local wx, wy, ww, wh = _with_0.camera:getWorld()
+        _with_0.camera.x = math.lerp(_with_0.camera.x, wx + self.x + ww / 4, dt)
+        _with_0.camera.y = math.lerp(_with_0.camera.y, wy + self.y + wh / 4, dt)
+        self.gun:update(dt)
+        self.gun.dir = self.hor_dir or 1
+        return _with_0
       end
     end,
     draw = function(self)
       do
         local _with_0 = love.graphics
         _with_0.setColor(255, 255, 255)
-        _with_0.draw(self.sprite, self.x, self.y, 0, self.hor_dir, 1, self.w / 2, self.h / 2)
+        _with_0.draw(self.sprite, self.x + self.w / 2, self.y + self.h / 2, 0, self.hor_dir, 1, self.w / 2, self.h / 2)
+        self.gun:draw()
         return _with_0
       end
+    end,
+    mouse_press = function(self, x, y, button)
+      return self.gun:fire()
     end
   }
   _base_0.__index = _base_0
@@ -57,7 +65,8 @@ do
       self.acc = 10
       self.sprite = love.graphics.newImage("assets/sprites/player/player_stand.png")
       self.w, self.h = self.sprite:getWidth(), self.sprite:getHeight() * .5
-      return world:add(self, self.x, self.y, self.w, self.h)
+      world:add(self, self.x, self.y, self.w, self.h)
+      self.gun = Gun(self.x, self.y, self.w / 1.1, self.h / 1.1, self.w / 2.2, self.h / 1.1, self)
     end,
     __base = _base_0,
     __name = nil
@@ -70,5 +79,7 @@ do
     end
   })
   _base_0.__class = _class_0
+  local self = _class_0
+  Gun = require("src/entities/gun")
   return _class_0
 end

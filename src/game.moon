@@ -10,14 +10,17 @@ export game = {
   sheep: {}
   scale: 32
 
-  world_w: 800
-  world_h: 600
+  bullets: {}
+
+  world_w: 500
+  world_h: 400
 }
 
 game.load = ->
   with game
     .camera     = gamera.new 0, 0, .world_w, .world_h
     .camera\setWindow 0, 0, love.graphics.getWidth!, love.graphics.getHeight!
+    .camera\setScale 2
 
     .map_camera = gamera.new 0, 0, .world_w, .world_h
     .map_camera\setWindow love.graphics.getWidth! - 260, 10, 250, 180
@@ -37,12 +40,12 @@ game.update = (dt) ->
     for g in *.game_objects
       g\update dt if g.update
 
-      g.x = math.clamp 0, .world_w, g.x if g.x
-      g.y = math.clamp 0, .world_h, g.y if g.y
+      g.x = math.clamp 0, .world_w - g.w, g.x if g.x
+      g.y = math.clamp 0, .world_h - g.h * 2, g.y if g.y
 
-    if love.keyboard.isDown "right"
-      .map_camera.wx += dt * 200
-      .map_camera.x = .map_camera.wx * -1
+    for b in *.bullets
+      b.x += b.dx
+      b.y += b.dy
 
 game.draw = ->
   with game
@@ -53,6 +56,9 @@ game.draw = ->
       .draw_stuff!
     .map_camera\draw ->
       .draw_stuff!
+
+    love.graphics.setColor 0, 0, 0
+    love.graphics.rectangle "line", .map_camera\getWindow!
   ----------------------------------
   -- debug
   ----------------------------------
@@ -68,10 +74,10 @@ game.draw_stuff = ->
     love.graphics.rectangle "fill", 0, 0, .world_w, .world_h
     for g in *.game_objects
       g\draw! if g.draw
-    ----------------------------------
-    -- camera hacks
-    ----------------------------------
-    --.map_camera.x, .map_camera.y = .camera.x, .camera.y
+
+    for b in *.bullets
+      love.graphics.setColor 0, 0, 0
+      love.graphics.rectangle "fill", 2, 2, b.x, b.y
 
 ----------------------------------
 -- load level from image data
@@ -117,4 +123,10 @@ game.make_entity = (id, x, y) ->
       sheep = Sheep x, y
       table.insert game.game_objects, sheep
       table.insert game.sheep,        sheep
+
+love.mousepressed = (x, y, button) ->
+  with game
+    for g in *.game_objects
+      g\mouse_press x, y, button if g.mouse_press
+
 game

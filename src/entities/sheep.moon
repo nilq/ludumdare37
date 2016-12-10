@@ -56,4 +56,4 @@ class
   draw: =>
     with love.graphics
       .setColor 255, 255, 255
-      .draw @sprite, @x, @y, 0, 1, 1, @w / 2, @h / 2
+      .draw @sprite, @x + @w / 2, @y + @h / 2, 0, 1, 1, @w / 2, @h / 2
