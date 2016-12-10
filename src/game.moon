@@ -1,4 +1,4 @@
-export gamera = require "kit/lib/gamera"
+export gamera        = require "kit/lib/gamera"
 ----------------------------------
 -- the game state
 ----------------------------------
@@ -7,10 +7,11 @@ export game = {
   ----------------------------------
   -- specifics - references
   ----------------------------------
-  sheep: {}
-  scale: 32
-
+  sheep:   {}
+  enemies: {}
   bullets: {}
+
+  scale: 32
 
   world_w: 500
   world_h: 400
@@ -20,14 +21,19 @@ game.load = ->
   with game
     .camera     = gamera.new 0, 0, .world_w, .world_h
     .camera\setWindow 0, 0, love.graphics.getWidth!, love.graphics.getHeight!
-    .camera\setScale 2
+    .camera\setScale 3
 
     .map_camera = gamera.new 0, 0, .world_w, .world_h
     .map_camera\setWindow love.graphics.getWidth! - 260, 10, 250, 180
     .map_camera\setScale 0.2
 
+    .grass_sprite = love.graphics.newImage "assets/sprites/misc/grass.png"
+    .grass_sprite\setWrap "repeat", "repeat"
+
+    .grass_quad = love.graphics.newQuad 0, 0, .world_w, .world_h, .grass_sprite\getWidth!, .grass_sprite\getHeight!
+
     .load_level "assets/levels/room.png"
-    .init_sheep!
+    .init_stuff!
 
 game.update = (dt) ->
   ----------------------------------
@@ -71,7 +77,8 @@ game.draw = ->
 game.draw_stuff = ->
   with game
     love.graphics.setColor 255, 255, 255
-    love.graphics.rectangle "fill", 0, 0, .world_w, .world_h
+    love.graphics.draw .grass_sprite, .grass_quad, 0, 0
+
     for g in *.game_objects
       g\draw! if g.draw
 
@@ -83,8 +90,9 @@ game.draw_stuff = ->
 -- load level from image data
 ----------------------------------
 game.map_stuff = {
-  "player": {r: 255, g: 0, b: 0}
-  "sheep": {r: 0, g: 255, b: 0}
+  "player": {r: 255, g: 0,   b: 0}
+  "sheep":  {r: 0,   g: 255, b: 0}
+  "enemy":  {r: 0,   g: 0,   b: 255}
 }
 
 game.load_level = (path) ->
@@ -102,13 +110,15 @@ game.load_level = (path) ->
             .make_entity k, .scale * rx, .scale * ry
 
 
-game.init_sheep = ->
+game.init_stuff = ->
   with game
     for s, _ in *.sheep
       s.leaders[#s.leaders + 1] = .player
+    for e, _ in *.enemies
+      e.leaders = .sheep
 
 game.make_entity = (id, x, y) ->
-  import Player, Sheep from require "src/entities"
+  import Player, Sheep, Enemy from require "src/entities"
 
   switch id
     when "player"
@@ -123,6 +133,11 @@ game.make_entity = (id, x, y) ->
       sheep = Sheep x, y
       table.insert game.game_objects, sheep
       table.insert game.sheep,        sheep
+
+    when "enemy"
+      enemy = Enemy x, y
+      table.insert game.game_objects, enemy
+      table.insert game.enemies,      enemy
 
 love.mousepressed = (x, y, button) ->
   with game

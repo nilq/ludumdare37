@@ -4,14 +4,14 @@ class
   -- list of game objects to run from
   ----------------------------------
   new: (@x, @y, @leaders={}) =>
-    @sprite = love.graphics.newImage "assets/sprites/misc/sheep.png"
+    @sprite = love.graphics.newImage "assets/sprites/misc/thug.png"
     @w, @h  = @sprite\getWidth!, @sprite\getHeight! * .5
 
     @dx = 0
     @dy = 0
 
     @frc = 0.15
-    @acc = 35
+    @acc = 85
 
     @dir_t = 3     -- seconds between dir change
     @t     = 0     -- dynamic timer thingy
@@ -29,11 +29,11 @@ class
       a = math.atan2 @y - t.y, @x - t.x
       d = math.sqrt (@x - t.x)^2 + (@y - t.y)^2
 
-      unless d > 80
+      unless d > 64
         @lead = true
 
-        @dx += (dt * (@acc * math.cos a) / (d * 0.05)) / #@leaders
-        @dy += (dt * (@acc * math.sin a) / (d * 0.05)) / #@leaders
+        @dx -= (dt * (@acc * math.cos a) / (d * 0.05)) / #@leaders
+        @dy -= (dt * (@acc * math.sin a) / (d * 0.05)) / #@leaders
 
     unless @lead
       if @t >= @dir_t

@@ -2,8 +2,9 @@ gamera = require("kit/lib/gamera")
 game = {
   game_objects = { },
   sheep = { },
-  scale = 32,
+  enemies = { },
   bullets = { },
+  scale = 32,
   world_w = 500,
   world_h = 400
 }
@@ -11,12 +12,15 @@ game.load = function()
   do
     game.camera = gamera.new(0, 0, game.world_w, game.world_h)
     game.camera:setWindow(0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-    game.camera:setScale(2)
+    game.camera:setScale(3)
     game.map_camera = gamera.new(0, 0, game.world_w, game.world_h)
     game.map_camera:setWindow(love.graphics.getWidth() - 260, 10, 250, 180)
     game.map_camera:setScale(0.2)
+    game.grass_sprite = love.graphics.newImage("assets/sprites/misc/grass.png")
+    game.grass_sprite:setWrap("repeat", "repeat")
+    game.grass_quad = love.graphics.newQuad(0, 0, game.world_w, game.world_h, game.grass_sprite:getWidth(), game.grass_sprite:getHeight())
     game.load_level("assets/levels/room.png")
-    game.init_sheep()
+    game.init_stuff()
     return game
   end
 end
@@ -68,7 +72,7 @@ end
 game.draw_stuff = function()
   do
     love.graphics.setColor(255, 255, 255)
-    love.graphics.rectangle("fill", 0, 0, game.world_w, game.world_h)
+    love.graphics.draw(game.grass_sprite, game.grass_quad, 0, 0)
     local _list_0 = game.game_objects
     for _index_0 = 1, #_list_0 do
       local g = _list_0[_index_0]
@@ -95,6 +99,11 @@ game.map_stuff = {
     r = 0,
     g = 255,
     b = 0
+  },
+  ["enemy"] = {
+    r = 0,
+    g = 0,
+    b = 255
   }
 }
 game.load_level = function(path)
@@ -114,21 +123,26 @@ game.load_level = function(path)
     return game
   end
 end
-game.init_sheep = function()
+game.init_stuff = function()
   do
     local _list_0 = game.sheep
     for _index_0 = 1, #_list_0 do
       local s, _ = _list_0[_index_0]
       s.leaders[#s.leaders + 1] = game.player
     end
+    local _list_1 = game.enemies
+    for _index_0 = 1, #_list_1 do
+      local e, _ = _list_1[_index_0]
+      e.leaders = game.sheep
+    end
     return game
   end
 end
 game.make_entity = function(id, x, y)
-  local Player, Sheep
+  local Player, Sheep, Enemy
   do
     local _obj_0 = require("src/entities")
-    Player, Sheep = _obj_0.Player, _obj_0.Sheep
+    Player, Sheep, Enemy = _obj_0.Player, _obj_0.Sheep, _obj_0.Enemy
   end
   local _exp_0 = id
   if "player" == _exp_0 then
@@ -139,6 +153,10 @@ game.make_entity = function(id, x, y)
     local sheep = Sheep(x, y)
     table.insert(game.game_objects, sheep)
     return table.insert(game.sheep, sheep)
+  elseif "enemy" == _exp_0 then
+    local enemy = Enemy(x, y)
+    table.insert(game.game_objects, enemy)
+    return table.insert(game.enemies, enemy)
   end
 end
 love.mousepressed = function(x, y, button)
