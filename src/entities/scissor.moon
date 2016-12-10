@@ -14,6 +14,8 @@ class
     @rotation = 0
     @dir = 1
 
+    @type = "scissor"
+
   update: (dt) =>
     @x = @mother.x + @ox         unless @dir == -1
     @x = @mother.x + @ox1 * @dir unless @dir == 1

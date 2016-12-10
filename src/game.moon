@@ -140,6 +140,9 @@ game.draw_hud = ->
       .setColor 255, 255, 255
       .draw sprite, 10 + (i - 1) * 74 - 5 + 32 + sprite\getWidth! / 2, love.graphics.getHeight! - 74 - 5 + 32 + sprite\getHeight! / 2, 0, 4, 4, sprite\getWidth! / 2, sprite\getHeight! / 2
 
+      .setColor 0, 0, 0
+      .print "#{v.ammo}/30", 10 + (i - 1) * 74 - 5 + 32 + sprite\getWidth! / 2 - 5, love.graphics.getHeight! - 74 - 5 + 32 + sprite\getHeight! / 2 if v.type == "gun"
+
 ----------------------------------
 -- load level from image data
 ----------------------------------

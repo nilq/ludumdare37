@@ -150,6 +150,10 @@ game.draw_hud = function()
       local sprite = game.player.tools[i].sprite
       _with_0.setColor(255, 255, 255)
       _with_0.draw(sprite, 10 + (i - 1) * 74 - 5 + 32 + sprite:getWidth() / 2, love.graphics.getHeight() - 74 - 5 + 32 + sprite:getHeight() / 2, 0, 4, 4, sprite:getWidth() / 2, sprite:getHeight() / 2)
+      _with_0.setColor(0, 0, 0)
+      if v.type == "gun" then
+        _with_0.print(tostring(v.ammo) .. "/30", 10 + (i - 1) * 74 - 5 + 32 + sprite:getWidth() / 2 - 5, love.graphics.getHeight() - 74 - 5 + 32 + sprite:getHeight() / 2)
+      end
     end
     return _with_0
   end

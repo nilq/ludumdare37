@@ -43,6 +43,8 @@ class
 
     @dir = 1
 
+    @type = "gun"
+
   update: (dt) =>
     @x = @mother.x + @ox         unless @dir == -1
     @x = @mother.x + @ox1 * @dir unless @dir == 1

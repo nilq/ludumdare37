@@ -48,7 +48,7 @@ class
 
       if @grow_t <= 0
         @naked = false
-        @sprite = game.sprites.sheep
+        @sprite = game.sprites.player
 
     @dx += @acc * dt if love.keyboard.isDown "right"
     @dx -= @acc * dt if love.keyboard.isDown "left"
