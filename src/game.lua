@@ -12,6 +12,9 @@ game.load = function()
 end
 game.update = function(dt)
   do
+    table.sort(game.game_objects, function(a, b)
+      return a.y < b.y
+    end)
     local _list_0 = game.game_objects
     for _index_0 = 1, #_list_0 do
       local g = _list_0[_index_0]
@@ -45,6 +48,11 @@ game.map_stuff = {
     r = 255,
     g = 0,
     b = 0
+  },
+  ["computer"] = {
+    r = 0,
+    g = 255,
+    b = 0
   }
 }
 game.load_level = function(path)
@@ -65,12 +73,17 @@ game.load_level = function(path)
   end
 end
 game.make_entity = function(id, x, y)
-  local Player
-  Player = require("src/entities").Player
+  local Player, Computer
+  do
+    local _obj_0 = require("src/entities")
+    Player, Computer = _obj_0.Player, _obj_0.Computer
+  end
   local _exp_0 = id
   if "player" == _exp_0 then
     local player = Player(x, y, 21, 21)
     return table.insert(game.game_objects, player)
+  elseif "computer" == _exp_0 then
+    return table.insert(game.game_objects, Computer(x, y))
   end
 end
 return game

@@ -21,10 +21,10 @@ do
       for _index_0 = 1, #_list_0 do
         local c, i = _list_0[_index_0]
         if not (c.normal.y == 0) then
-          self.y = 0
+          self.dy = 0
         else
           if not (c.normal.x == 0) then
-            self.x = 0
+            self.dx = 0
           end
         end
       end
@@ -39,8 +39,12 @@ do
       end
     end,
     draw = function(self)
-      love.graphics.setColor(255, 255, 255)
-      return love.graphics.draw(self.sprite, self.x, self.y, 0, self.hor_dir, 1, self.w / 2, self.h / 2)
+      do
+        local _with_0 = love.graphics
+        _with_0.setColor(255, 255, 255)
+        _with_0.draw(self.sprite, self.x, self.y, 0, self.hor_dir, 1, self.w / 2, self.h / 2)
+        return _with_0
+      end
     end
   }
   _base_0.__index = _base_0
@@ -52,7 +56,7 @@ do
       self.frc = 0.15
       self.acc = 10
       self.sprite = love.graphics.newImage("assets/sprites/player/player_stand.png")
-      self.w, self.h = self.sprite:getWidth(), self.sprite:getHeight()
+      self.w, self.h = self.sprite:getWidth(), self.sprite:getHeight() * .5
       return world:add(self, self.x, self.y, self.w, self.h)
     end,
     __base = _base_0,

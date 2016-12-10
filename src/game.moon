@@ -13,7 +13,13 @@ game.load = ->
     .load_level "assets/levels/room.png"
 
 game.update = (dt) ->
+  ----------------------------------
+  -- sorry world .. not good. not good
+  ----------------------------------
   with game
+    table.sort .game_objects, (a, b) ->
+      a.y < b.y
+
     for g in *.game_objects
       g\update dt if g.update
 
@@ -39,6 +45,7 @@ game.draw = ->
 ----------------------------------
 game.map_stuff = {
   "player": {r: 255, g: 0, b: 0}
+  "computer": {r: 0, g: 255, b: 0}
 }
 
 game.load_level = (path) ->
@@ -55,9 +62,8 @@ game.load_level = (path) ->
           if r == v.r and g == v.g and b == v.b
             .make_entity k, .scale * rx, .scale * ry
 
-
 game.make_entity = (id, x, y) ->
-  import Player from require "src/entities"
+  import Player, Computer from require "src/entities"
 
   switch id
     when "player"
@@ -66,5 +72,8 @@ game.make_entity = (id, x, y) ->
       -- do things with player here ...
       ----------------------------------
       table.insert game.game_objects, player
+
+    when "computer"
+      table.insert game.game_objects, Computer x, y
 
 game

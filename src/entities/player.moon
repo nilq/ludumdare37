@@ -9,7 +9,7 @@ class
     -- sprite stuff - res inference
     ----------------------------------
     @sprite = love.graphics.newImage "assets/sprites/player/player_stand.png"
-    @w, @h  = @sprite\getWidth!, @sprite\getHeight!
+    @w, @h  = @sprite\getWidth!, @sprite\getHeight! * .5
 
     world\add @, @x, @y, @w, @h
 
@@ -27,10 +27,10 @@ class
 
     for c, i in *@cols
       unless c.normal.y == 0
-         @y = 0
+         @dy = 0
       else
         unless c.normal.x == 0
-          @x = 0
+          @dx = 0
     ----------------------------------
     -- camera stuff
     ----------------------------------
@@ -45,5 +45,6 @@ class
     @hor_dir = math.sign @dx unless 0 == math.sign @dx
 
   draw: =>
-    love.graphics.setColor 255, 255, 255
-    love.graphics.draw @sprite, @x, @y, 0, @hor_dir, 1, @w / 2, @h / 2
+    with love.graphics
+      .setColor 255, 255, 255
+      .draw @sprite, @x, @y, 0, @hor_dir, 1, @w / 2, @h / 2
