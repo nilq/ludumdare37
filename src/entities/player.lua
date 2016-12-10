@@ -28,21 +28,26 @@ do
           end
         end
       end
+      if not (0 == math.sign(self.dx)) then
+        self.hor_dir = math.sign(self.dx)
+      end
     end,
     draw = function(self)
-      love.graphics.setColor(255, 0, 0)
-      return love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
+      love.graphics.setColor(255, 255, 255)
+      return love.graphics.draw(self.sprite, self.x, self.y, 0, self.hor_dir, 1, self.w / 2, self.h / 2)
     end
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
-    __init = function(self, x, y, w, h)
-      self.x, self.y, self.w, self.h = x, y, w, h
-      world:add(self, self.x, self.y, self.w, self.h)
+    __init = function(self, x, y)
+      self.x, self.y = x, y
       self.dx = 0
       self.dy = 0
       self.frc = 0.15
-      self.acc = 7
+      self.acc = 10
+      self.sprite = love.graphics.newImage("assets/sprites/player/player_stand.png")
+      self.w, self.h = self.sprite:getWidth(), self.sprite:getHeight()
+      return world:add(self, self.x, self.y, self.w, self.h)
     end,
     __base = _base_0,
     __name = nil

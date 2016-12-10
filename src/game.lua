@@ -1,3 +1,4 @@
+love.graphics.setBackgroundColor(255, 255, 255)
 game = {
   game_objects = { },
   scale = 32
@@ -29,8 +30,12 @@ game.draw = function()
         g:draw()
       end
     end
-    return game
   end
+  local fps = string.format("%07.2f", 1 / love.timer.getAverageDelta())
+  local mem = string.format("%013.4f", collectgarbage("count"))
+  love.graphics.setColor(0, 0, 0)
+  love.graphics.print("FPS: " .. tostring(fps), 0, 0)
+  return love.graphics.print("MEM: " .. tostring(mem), 0, 16)
 end
 game.map_stuff = {
   ["player"] = {

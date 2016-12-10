@@ -1,3 +1,7 @@
+love.graphics.setBackgroundColor 255, 255, 255
+----------------------------------
+-- the game state
+----------------------------------
 export game = {
   game_objects: {}
   scale: 32
@@ -16,6 +20,16 @@ game.draw = ->
   with game
     for g in *.game_objects
       g\draw! if g.draw
+  ----------------------------------
+  -- debug
+  ----------------------------------
+  fps = string.format "%07.2f", 1 / love.timer.getAverageDelta!
+  mem = string.format "%013.4f", collectgarbage "count"
+
+  love.graphics.setColor 0, 0, 0
+
+  love.graphics.print "FPS: #{fps}", 0, 0
+  love.graphics.print "MEM: #{mem}", 0, 16
 
 ----------------------------------
 -- load level from image data
