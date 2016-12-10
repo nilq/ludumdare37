@@ -11,9 +11,11 @@ export game = {
   enemies: {}
   bullets: {}
 
+  sprites: {}
+
   scale: 32
 
-  world_w: 250
+  world_w: 350
   world_h: 200
 }
 
@@ -31,6 +33,23 @@ game.load = ->
     .grass_sprite\setWrap "repeat", "repeat"
 
     .grass_quad = love.graphics.newQuad 0, 0, .world_w, .world_h, .grass_sprite\getWidth!, .grass_sprite\getHeight!
+
+    .sprites = {
+      sheep: love.graphics.newImage "assets/sprites/misc/sheep.png"
+      sheep_cut: love.graphics.newImage "assets/sprites/misc/sheep_cut.png"
+      sheep_dead: love.graphics.newImage "assets/sprites/misc/dead_sheep.png"
+      sheep_cut_dead: love.graphics.newImage "assets/sprites/misc/dead_sheep_naked.png"
+
+      player: love.graphics.newImage "assets/sprites/player/player_stand.png"
+
+      thug: love.graphics.newImage "assets/sprites/misc/thug.png"
+      thug_dead: love.graphics.newImage "assets/sprites/misc/dead_thug.png"
+
+      scissor: love.graphics.newImage "assets/sprites/guns/scissor.png"
+      scissor_cut: love.graphics.newImage "assets/sprites/guns/scissor_cut.png"
+
+      gun: love.graphics.newImage "assets/sprites/guns/gun.png"
+    }
 
     .load_level "assets/levels/room.png"
     .init_stuff!

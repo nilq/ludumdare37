@@ -1,5 +1,5 @@
 class
-  Gun = require "src/entities/gun"
+  Gun = require "src/entities/scissor"
 
   new: (@x, @y) =>
     @dx = 0
@@ -10,7 +10,7 @@ class
     ----------------------------------
     -- sprite stuff - res inference
     ----------------------------------
-    @sprite = love.graphics.newImage "assets/sprites/player/player_stand.png"
+    @sprite = game.sprites.player
     @w, @h  = @sprite\getWidth!, @sprite\getHeight! * .5
 
     world\add @, @x, @y, @w, @h

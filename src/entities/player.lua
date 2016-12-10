@@ -65,7 +65,7 @@ do
       self.dy = 0
       self.frc = 0.15
       self.acc = 10
-      self.sprite = love.graphics.newImage("assets/sprites/player/player_stand.png")
+      self.sprite = game.sprites.player
       self.w, self.h = self.sprite:getWidth(), self.sprite:getHeight() * .5
       world:add(self, self.x, self.y, self.w, self.h)
       self.gun = Gun(self.x, self.y, self.w / 1.1, self.h / 1.1, self.w / 2.2, self.h / 1.1, self)
@@ -84,6 +84,6 @@ do
   })
   _base_0.__class = _class_0
   local self = _class_0
-  Gun = require("src/entities/gun")
+  Gun = require("src/entities/scissor")
   return _class_0
 end

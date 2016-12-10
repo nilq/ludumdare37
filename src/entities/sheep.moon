@@ -4,7 +4,7 @@ class
   -- list of game objects to run from
   ----------------------------------
   new: (@x, @y, @leaders={}) =>
-    @sprite = love.graphics.newImage "assets/sprites/misc/sheep.png"
+    @sprite = game.sprites.sheep
     @w, @h  = @sprite\getWidth!, @sprite\getHeight! * .5
 
     @dx = 0
@@ -23,6 +23,10 @@ class
     ----------------------------------
     @enemy = true
     @dead  = false
+    @naked = false
+
+    @grow_time = 10
+    @grow_t    = 0
 
     @hor_dir = 1
 
@@ -30,6 +34,13 @@ class
 
   update: (dt) =>
     return if @dead
+
+    if @naked
+      @grow_t -= dt
+
+      if @grow_t <= 0
+        @naked = false
+        @sprite = game.sprites.sheep
 
     @lead = false
     @t   += dt
@@ -65,9 +76,24 @@ class
         unless c.normal.x == 0
           @dx = 0
 
+  cut: =>
+    unless @naked
+      @sprite = game.sprites.sheep_cut
+      @grow_t = @grow_time
+
+      @naked = true
+    else
+      @dead   = true
+      @sprite = game.sprites.sheep_cut_dead
+
+      for i, v in ipairs game.sheep
+        table.remove game.sheep, i if v == @
+
+      world\remove @
+
   die: =>
     @dead   = true
-    @sprite = love.graphics.newImage "assets/sprites/misc/dead_sheep.png"
+    @sprite = game.sprites.sheep_dead
 
     for i, v in ipairs game.sheep
       table.remove game.sheep, i if v == @

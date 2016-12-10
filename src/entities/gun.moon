@@ -29,7 +29,7 @@ class Bullet
 
 class
   new: (@x, @y, @ox, @oy, @ox1, @oy1, @mother) =>
-    @sprite = love.graphics.newImage "assets/sprites/guns/gun.png"
+    @sprite = game.sprites.gun
     @w, @h  = @sprite\getWidth!, @sprite\getHeight!
 
     @ammo   = 10
@@ -44,7 +44,7 @@ class
     @dir = 1
 
   update: (dt) =>
-    @x = @mother.x + @ox unless @dir == -1
+    @x = @mother.x + @ox         unless @dir == -1
     @x = @mother.x + @ox1 * @dir unless @dir == 1
     @x += @ro
 

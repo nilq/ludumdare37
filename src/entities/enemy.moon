@@ -4,7 +4,7 @@ class
   -- list of game objects to run from
   ----------------------------------
   new: (@x, @y, @leaders={}) =>
-    @sprite = love.graphics.newImage "assets/sprites/misc/thug.png"
+    @sprite = game.sprites.thug
     @w, @h  = @sprite\getWidth!, @sprite\getHeight! * .5
 
     @dx = 0
@@ -67,7 +67,7 @@ class
 
   die: =>
     @dead   = true
-    @sprite = love.graphics.newImage "assets/sprites/misc/dead_thug.png"
+    @sprite = game.sprites.thug_dead
 
     for i, v in ipairs game.enemies
       table.remove game.enemies, i if v == @
