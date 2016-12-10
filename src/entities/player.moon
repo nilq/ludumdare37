@@ -85,8 +85,8 @@ class
     with game
       wx, wy, ww, wh = .camera\getWorld!
 
-      .camera.x = math.lerp .camera.x, @x, dt
-      .camera.y = math.lerp .camera.y, @y, dt
+      .camera.x = math.lerp .camera.x, @x, dt * 2
+      .camera.y = math.lerp .camera.y, @y, dt * 2
 
     @tools[@current]\update dt
     @tools[@current].dir = @hor_dir or 1

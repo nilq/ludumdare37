@@ -47,8 +47,8 @@ do
       do
         local _with_0 = game
         local wx, wy, ww, wh = _with_0.camera:getWorld()
-        _with_0.camera.x = math.lerp(_with_0.camera.x, self.x, dt)
-        _with_0.camera.y = math.lerp(_with_0.camera.y, self.y, dt)
+        _with_0.camera.x = math.lerp(_with_0.camera.x, self.x, dt * 2)
+        _with_0.camera.y = math.lerp(_with_0.camera.y, self.y, dt * 2)
       end
       self.tools[self.current]:update(dt)
       self.tools[self.current].dir = self.hor_dir or 1

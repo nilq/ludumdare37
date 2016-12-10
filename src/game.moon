@@ -16,15 +16,15 @@ export game = {
 
   scale: 32
 
-  world_w: 350
-  world_h: 200
+  world_w: 625
+  world_h: 450
 
-  wave: 1
+  wave: 0
   wave_thugs: 0
 
-  t: 0
-  wave_t: 3
-  new_wave: false
+  t: 4
+  wave_t: 4
+  new_wave: true
 }
 
 game.load = ->
@@ -69,8 +69,6 @@ game.load = ->
     }
 
     .load_level "assets/levels/room.png"
-    .load_level "assets/levels/waves/wave#{.wave}.png"
-    .init_stuff!
 
 game.update = (dt) ->
   ----------------------------------
@@ -78,7 +76,12 @@ game.update = (dt) ->
   ----------------------------------
   with game
     table.sort .game_objects, (a, b) ->
-      a.y < b.y
+      if a.dead and not b.dead
+        return true
+      elseif b.dead and not a.dead
+        return false
+      else
+        a.y < b.y
 
     for g in *.game_objects
       continue if g == nil

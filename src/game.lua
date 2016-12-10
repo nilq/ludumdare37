@@ -7,13 +7,13 @@ game = {
   bullets = { },
   sprites = { },
   scale = 32,
-  world_w = 350,
-  world_h = 200,
-  wave = 1,
+  world_w = 625,
+  world_h = 450,
+  wave = 0,
   wave_thugs = 0,
-  t = 0,
-  wave_t = 3,
-  new_wave = false
+  t = 4,
+  wave_t = 4,
+  new_wave = true
 }
 game.load = function()
   do
@@ -47,15 +47,19 @@ game.load = function()
       gun = love.graphics.newImage("assets/sprites/guns/gun.png")
     }
     game.load_level("assets/levels/room.png")
-    game.load_level("assets/levels/waves/wave" .. tostring(game.wave) .. ".png")
-    game.init_stuff()
     return game
   end
 end
 game.update = function(dt)
   do
     table.sort(game.game_objects, function(a, b)
-      return a.y < b.y
+      if a.dead and not b.dead then
+        return true
+      elseif b.dead and not a.dead then
+        return false
+      else
+        return a.y < b.y
+      end
     end)
     local _list_0 = game.game_objects
     for _index_0 = 1, #_list_0 do
