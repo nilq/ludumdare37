@@ -64,5 +64,3 @@ Idea shit
   Mr. Robot things ...
 
   *draw* *sketch* *wow*
-
-  ---
