@@ -1,6 +1,17 @@
 # ludumdare37
 "a game about game stuff" - Nilq, 00:14:22 Dec 10, 2016
 
+TODO
+---
+
+- Implement computer
+  - language
+  - filesystem/terminal stuff
+- Implement world
+- Implement player
+- Coffee
+
+
 Hacking mechanics and stuff - idea
 ---
 
