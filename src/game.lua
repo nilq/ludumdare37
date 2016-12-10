@@ -165,12 +165,14 @@ game.init_stuff = function()
     local _list_0 = game.sheep
     for _index_0 = 1, #_list_0 do
       local s, _ = _list_0[_index_0]
+      s.leaders = game.enemies
       s.leaders[#s.leaders + 1] = game.player
     end
     local _list_1 = game.enemies
     for _index_0 = 1, #_list_1 do
       local e, _ = _list_1[_index_0]
       e.leaders = game.sheep
+      e.leaders[#e.leaders + 1] = game.player
     end
     return game
   end

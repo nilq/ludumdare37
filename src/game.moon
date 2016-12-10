@@ -137,9 +137,12 @@ game.load_level = (path) ->
 game.init_stuff = ->
   with game
     for s, _ in *.sheep
+      s.leaders = .enemies
       s.leaders[#s.leaders + 1] = .player
+
     for e, _ in *.enemies
       e.leaders = .sheep
+      e.leaders[#e.leaders + 1] = .player
 
 game.make_entity = (id, x, y) ->
   import Player, Sheep, Enemy from require "src/entities"

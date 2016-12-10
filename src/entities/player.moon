@@ -53,8 +53,11 @@ class
       .camera.x = math.lerp .camera.x, @x, dt
       .camera.y = math.lerp .camera.y, @y, dt
 
-      @gun\update dt
-      @gun.dir = @hor_dir or 1
+    @gun\update dt
+    @gun.dir = @hor_dir or 1
+
+  cut: =>
+    print "how is this even possible?"
 
   draw: =>
     with love.graphics

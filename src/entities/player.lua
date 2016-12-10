@@ -37,10 +37,12 @@ do
         local wx, wy, ww, wh = _with_0.camera:getWorld()
         _with_0.camera.x = math.lerp(_with_0.camera.x, self.x, dt)
         _with_0.camera.y = math.lerp(_with_0.camera.y, self.y, dt)
-        self.gun:update(dt)
-        self.gun.dir = self.hor_dir or 1
-        return _with_0
       end
+      self.gun:update(dt)
+      self.gun.dir = self.hor_dir or 1
+    end,
+    cut = function(self)
+      return print("how is this even possible?")
     end,
     draw = function(self)
       do
