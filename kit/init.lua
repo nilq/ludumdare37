@@ -52,7 +52,6 @@ function love.run()
     if update_timer > target_delta then
       shack:update(dt)
       state:update(dt)
-      light_world:update(dt)
     end
 
     if love.graphics and love.graphics.isActive() then

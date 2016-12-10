@@ -4,13 +4,20 @@
 TODO
 ---
 
+- Implement world
+- Implement player
 - Implement computer
   - language
   - filesystem/terminal stuff
-- Implement world
-- Implement player
 - Coffee
 
+### Computer
+
+KimScript
+
+```
+
+```
 
 Hacking mechanics and stuff - idea
 ---
