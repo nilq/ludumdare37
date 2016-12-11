@@ -67,6 +67,8 @@ game.load = ->
       scissor:         love.graphics.newImage "assets/sprites/guns/scissor.png"
       scissor_cut:     love.graphics.newImage "assets/sprites/guns/scissor_cut.png"
 
+      coin:            love.graphics.newImage "assets/sprites/misc/coin.png"
+
       gun:             love.graphics.newImage "assets/sprites/guns/gun.png"
     }
 
@@ -194,6 +196,20 @@ game.draw_hud = ->
     .setColor 0, 0, 0
     .print text, .getWidth! / 2 - (.getFont!\getWidth text) / 2, 20
 
+    cx, cy = .getWidth! - 260, .getHeight! / 3
+
+    text = "#{string.format "%09.0f", game.player.currency}"
+    .print text, cx, cy + 6
+
+    .setColor 255, 255, 0
+    .print "$$$", cx + (font\getWidth text), cy + 6
+
+    .setColor 0, 0, 0
+    text = "#{string.format "%09.0f", #game.sheep - 1}"
+    .print text, cx, cy + 22
+
+    .setColor 255, 255, 0
+    .print "(living)sheep", cx + (font\getWidth text), cy + 22
 
 ----------------------------------
 -- load level from image data

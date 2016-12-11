@@ -11,7 +11,7 @@ class
     @dy = 0
 
     @frc = 0.15
-    @acc = 35
+    @acc = 25
 
     @type  = "sheep"
 
@@ -84,6 +84,8 @@ class
       @grow_t = @grow_time
 
       @naked = true
+
+      return 100 -- bitcoins
     else
       @dead   = true
       @sprite = game.sprites.sheep_cut_dead
@@ -93,6 +95,8 @@ class
 
       @update = nil
       world\remove @
+
+      return -100 -- penalty for killing le sheep
 
   die: =>
     @dead   = true

@@ -6,6 +6,8 @@ class
     @dx = 0
     @dy = 0
 
+    @currency = 0
+
     @frc = 0.15
     @acc = 10
     ----------------------------------
@@ -112,7 +114,9 @@ class
     return if @dead
 
     if key == "c"
-      @tools[@current]\fire!
+      a = @tools[@current]\fire!
+
+      @currency += a if a
     else
       n = tonumber key
       if n

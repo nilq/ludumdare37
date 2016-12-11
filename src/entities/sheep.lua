@@ -56,6 +56,7 @@ do
         self.sprite = game.sprites.sheep_cut
         self.grow_t = self.grow_time
         self.naked = true
+        return 100
       else
         self.dead = true
         self.sprite = game.sprites.sheep_cut_dead
@@ -65,7 +66,8 @@ do
           end
         end
         self.update = nil
-        return world:remove(self)
+        world:remove(self)
+        return -100
       end
     end,
     die = function(self)
@@ -100,7 +102,7 @@ do
       self.dx = 0
       self.dy = 0
       self.frc = 0.15
-      self.acc = 35
+      self.acc = 25
       self.type = "sheep"
       self.dir_t = 3
       self.t = 0

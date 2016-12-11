@@ -49,8 +49,8 @@ do
           end
           local d = math.sqrt((self.x - (s.x + s.w / 4)) ^ 2 + (self.y - s.y) ^ 2)
           if d < s.w then
-            s:cut()
-            return 
+            local a = s:cut()
+            return a
           end
           _continue_0 = true
         until true
@@ -69,8 +69,8 @@ do
           end
           local d = math.sqrt((self.x - (s.x + s.w / 4)) ^ 2 + (self.y - s.y) ^ 2)
           if d < s.h then
-            s:cut()
-            return 
+            local a = s:cut()
+            return a
           end
           _continue_0 = true
         until true

@@ -56,8 +56,11 @@ class
       d = math.sqrt (@x - (s.x + s.w / 4))^2 + (@y - s.y)^2
 
       if d < s.w
-        s\cut!
-        return
+        ----------------------------------
+        -- 'a' being some kinda reward for cutting
+        ----------------------------------
+        a = s\cut!
+        return a
 
     for s, _ in *game.enemies
       continue if s == @mother
@@ -65,5 +68,5 @@ class
       d = math.sqrt (@x - (s.x + s.w / 4))^2 + (@y - s.y)^2
 
       if d < s.h
-        s\cut!
-        return
+        a = s\cut!
+        return a

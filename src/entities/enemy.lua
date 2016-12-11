@@ -84,6 +84,7 @@ do
         self.sprite = game.sprites.thug_cut
         self.grow_t = self.grow_time
         self.naked = true
+        return 10
       else
         self.dead = true
         self.sprite = game.sprites.thug_cut_dead

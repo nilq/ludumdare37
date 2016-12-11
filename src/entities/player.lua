@@ -77,7 +77,10 @@ do
         return 
       end
       if key == "c" then
-        return self.tools[self.current]:fire()
+        local a = self.tools[self.current]:fire()
+        if a then
+          self.currency = self.currency + a
+        end
       else
         local n = tonumber(key)
         if n then
@@ -93,6 +96,7 @@ do
       self.x, self.y = x, y
       self.dx = 0
       self.dy = 0
+      self.currency = 0
       self.frc = 0.15
       self.acc = 10
       self.sprite = game.sprites.player

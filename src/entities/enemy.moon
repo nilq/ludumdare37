@@ -115,6 +115,8 @@ class
       @grow_t = @grow_time
 
       @naked = true
+
+      return 10 -- bitcoins for le beard
     else
       @dead   = true
       @sprite = game.sprites.thug_cut_dead

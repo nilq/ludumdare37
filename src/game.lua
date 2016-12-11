@@ -45,6 +45,7 @@ game.load = function()
       thug_cut_dead = love.graphics.newImage("assets/sprites/misc/dead_thug_naked.png"),
       scissor = love.graphics.newImage("assets/sprites/guns/scissor.png"),
       scissor_cut = love.graphics.newImage("assets/sprites/guns/scissor_cut.png"),
+      coin = love.graphics.newImage("assets/sprites/misc/coin.png"),
       gun = love.graphics.newImage("assets/sprites/guns/gun.png")
     }
     local Enemy
@@ -201,6 +202,16 @@ game.draw_hud = function()
     _with_0.rectangle("fill", _with_0.getWidth() / 2 - (_with_0.getFont():getWidth(text)) / 2 - 5, 15, (_with_0.getFont():getWidth(text)) + 5, 20)
     _with_0.setColor(0, 0, 0)
     _with_0.print(text, _with_0.getWidth() / 2 - (_with_0.getFont():getWidth(text)) / 2, 20)
+    local cx, cy = _with_0.getWidth() - 260, _with_0.getHeight() / 3
+    text = tostring(string.format("%09.0f", game.player.currency))
+    _with_0.print(text, cx, cy + 6)
+    _with_0.setColor(255, 255, 0)
+    _with_0.print("$$$", cx + (font:getWidth(text)), cy + 6)
+    _with_0.setColor(0, 0, 0)
+    text = tostring(string.format("%09.0f", #game.sheep - 1))
+    _with_0.print(text, cx, cy + 22)
+    _with_0.setColor(255, 255, 0)
+    _with_0.print("(living)sheep", cx + (font:getWidth(text)), cy + 22)
     return _with_0
   end
 end
