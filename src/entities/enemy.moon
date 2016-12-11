@@ -107,7 +107,9 @@ class
 
     world\remove @
     @update = nil
+
     game.wave_thugs -= 1
+    game.sounds.scream\play!
 
   cut: =>
     unless @naked
@@ -126,7 +128,10 @@ class
 
       world\remove @
       @update = nil
+
       game.wave_thugs -= 1
+      game.sounds.scream\play!
+      0
 
   draw: =>
     with love.graphics

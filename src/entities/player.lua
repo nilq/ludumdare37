@@ -4,6 +4,23 @@ do
   local _base_0 = {
     update = function(self, dt)
       if self.dead then
+        self.t = self.t - dt
+        if self.t <= 0 then
+          do
+            local _with_0 = game
+            _with_0.sheep = { }
+            _with_0.enemies = { }
+            local _list_0 = _with_0.game_objects
+            for _index_0 = 1, #_list_0 do
+              local g = _list_0[_index_0]
+              world:remove(g)
+            end
+            _with_0.game_objects = { }
+            _with_0.wave = 1
+            _with_0.wave_thugs = 0
+            _with_0.load_level("assets/levels/room.png")
+          end
+        end
         return 
       end
       if self.naked then
@@ -61,6 +78,7 @@ do
       else
         self.dead = true
         self.sprite = game.sprites.player_cut_dead
+        return game.sounds.scream:play()
       end
     end,
     draw = function(self)
@@ -96,6 +114,7 @@ do
           if not (self.currency - _with_0.ammo_cost < 0) then
             self.currency = self.currency - _with_0.ammo_cost
             self.tools[1].ammo = self.tools[1].ammo + 5
+            self.tools[1].ammo = math.clamp(0, 10, self.tools[1].ammo)
           end
           return _with_0
         end
@@ -129,6 +148,8 @@ do
       self.naked = false
       self.grow_time = 10
       self.grow_t = 0
+      self.restart_t = 4
+      self.t = 0
       self.health = 100
     end,
     __base = _base_0,

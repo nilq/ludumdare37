@@ -50,6 +50,9 @@ game.load = function()
       coin = love.graphics.newImage("assets/sprites/misc/coin.png"),
       gun = love.graphics.newImage("assets/sprites/guns/gun.png")
     }
+    game.sounds = {
+      scream = love.audio.newSource("assets/sound/scream.mp3", "static")
+    }
     local Enemy
     Enemy = require("src/entities").Enemy
     game.load_level("assets/levels/room.png")
@@ -103,7 +106,7 @@ game.update = function(dt)
       b.x = b.x + b.dx
       b.y = b.y + b.dy
     end
-    if game.wave_thugs == 0 and not game.new_wave then
+    if game.wave_thugs <= 0 and not game.new_wave then
       game.t = game.wave_t
       game.new_wave = true
     end
@@ -191,7 +194,7 @@ game.draw_hud = function()
       _with_0.draw(sprite, 10 + (i - 1) * 74 - 5 + 32 + sprite:getWidth() / 2, love.graphics.getHeight() - 74 - 5 + 32 + sprite:getHeight() / 2, 0, 4, 4, sprite:getWidth() / 2, sprite:getHeight() / 2)
       _with_0.setColor(0, 0, 0)
       if v.type == "gun" then
-        _with_0.print(tostring(v.ammo) .. "/30", 10 + (i - 1) * 74 - 5 + 32 + sprite:getWidth() / 2 - 5, love.graphics.getHeight() - 74 - 5 + 32 + sprite:getHeight() / 2)
+        _with_0.print(tostring(v.ammo) .. "/10", 10 + (i - 1) * 74 - 5 + 32 + sprite:getWidth() / 2 - 5, love.graphics.getHeight() - 74 - 5 + 32 + sprite:getHeight() / 2)
       end
     end
     local text = ""
@@ -247,6 +250,11 @@ game.map_stuff = {
 game.load_wave = function()
   do
     game.enemies = { }
+    if game.player.dead then
+      game.player.dead = false
+      game.player.naked = false
+      game.player.ammo = 10
+    end
     for i = 1, game.wave * 3 do
       local thug = game.pool[(i + game.wave * 3) % #game.pool]
       if thug.dead then

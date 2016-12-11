@@ -96,7 +96,9 @@ class
       @update = nil
       world\remove @
 
-      return -100 -- penalty for killing le sheep
+      game.sounds.scream\play!
+
+      0
 
   die: =>
     @dead   = true
@@ -107,6 +109,8 @@ class
 
     @update = nil
     world\remove @
+
+    game.sounds.scream\play!
 
   draw: =>
     with love.graphics

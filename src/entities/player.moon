@@ -37,13 +37,31 @@ class
     @grow_time = 10
     @grow_t    = 0
 
+    @restart_t = 4
+    @t         = 0
+
     ----------------------------------
     -- things with indicators
     ----------------------------------
     @health = 100
 
   update: (dt) =>
-    return if @dead
+    if @dead
+      @t -= dt
+      if @t <= 0
+        with game
+          .sheep        = {}
+          .enemies      = {}
+
+          for g in *.game_objects
+            world\remove g
+
+          .game_objects = {}
+
+          .wave         = 1
+          .wave_thugs   = 0
+          .load_level "assets/levels/room.png"
+      return
 
     if @naked
       @grow_t -= dt
@@ -103,6 +121,8 @@ class
       @dead   = true
       @sprite = game.sprites.player_cut_dead
 
+      game.sounds.scream\play!
+
   draw: =>
     with love.graphics
       .setColor 255, 255, 255
@@ -132,6 +152,7 @@ class
           -- tfw you code 'slam'
           ----------------------------------
           @tools[1].ammo += 5
+          @tools[1].ammo  = math.clamp 0, 10, @tools[1].ammo
     else
       n = tonumber key
       if n

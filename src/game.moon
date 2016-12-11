@@ -75,6 +75,10 @@ game.load = ->
       gun:             love.graphics.newImage "assets/sprites/guns/gun.png"
     }
 
+    .sounds = {
+      scream: love.audio.newSource "assets/sound/scream.mp3", "static"
+    }
+
     import Enemy from require "src/entities"
 
     .load_level "assets/levels/room.png"
@@ -109,7 +113,7 @@ game.update = (dt) ->
       b.x += b.dx
       b.y += b.dy
 
-    if .wave_thugs == 0 and not .new_wave
+    if .wave_thugs <= 0 and not .new_wave
       .t        = .wave_t
       .new_wave = true
 
@@ -185,7 +189,7 @@ game.draw_hud = ->
       .draw sprite, 10 + (i - 1) * 74 - 5 + 32 + sprite\getWidth! / 2, love.graphics.getHeight! - 74 - 5 + 32 + sprite\getHeight! / 2, 0, 4, 4, sprite\getWidth! / 2, sprite\getHeight! / 2
 
       .setColor 0, 0, 0
-      .print "#{v.ammo}/30", 10 + (i - 1) * 74 - 5 + 32 + sprite\getWidth! / 2 - 5, love.graphics.getHeight! - 74 - 5 + 32 + sprite\getHeight! / 2 if v.type == "gun"
+      .print "#{v.ammo}/10", 10 + (i - 1) * 74 - 5 + 32 + sprite\getWidth! / 2 - 5, love.graphics.getHeight! - 74 - 5 + 32 + sprite\getHeight! / 2 if v.type == "gun"
 
     text = ""
     if game.new_wave
@@ -243,6 +247,11 @@ game.map_stuff = {
 game.load_wave = ->
   with game
     .enemies = {}
+
+    if .player.dead
+      .player.dead  = false
+      .player.naked = false
+      .player.ammo  = 10
 
     for i = 1, .wave * 3
       thug = .pool[(i + .wave * 3) % #.pool]

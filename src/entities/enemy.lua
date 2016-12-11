@@ -78,6 +78,7 @@ do
       world:remove(self)
       self.update = nil
       game.wave_thugs = game.wave_thugs - 1
+      return game.sounds.scream:play()
     end,
     cut = function(self)
       if not (self.naked) then
@@ -96,6 +97,8 @@ do
         world:remove(self)
         self.update = nil
         game.wave_thugs = game.wave_thugs - 1
+        game.sounds.scream:play()
+        return 0
       end
     end,
     draw = function(self)

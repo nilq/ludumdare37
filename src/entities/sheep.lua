@@ -67,7 +67,8 @@ do
         end
         self.update = nil
         world:remove(self)
-        return -100
+        game.sounds.scream:play()
+        return 0
       end
     end,
     die = function(self)
@@ -79,7 +80,8 @@ do
         end
       end
       self.update = nil
-      return world:remove(self)
+      world:remove(self)
+      return game.sounds.scream:play()
     end,
     draw = function(self)
       do
