@@ -27,6 +27,9 @@ export game = {
   t: 4
   wave_t: 4
   new_wave: true
+
+  sheep_cost: 500
+  ammo_cost:  300
 }
 
 game.load = ->
@@ -190,6 +193,9 @@ game.draw_hud = ->
     else
       text = "WAVE: #{game.wave}"
 
+    ----------------------------------
+    -- Optimize this shit - make simple for-loop and list
+    ----------------------------------
     .setColor 200, 200, 200
     .rectangle "fill", .getWidth! / 2 - (.getFont!\getWidth text) / 2 - 5, 15, (.getFont!\getWidth text) + 5, 20
 
@@ -210,6 +216,20 @@ game.draw_hud = ->
 
     .setColor 255, 255, 0
     .print "(living)sheep", cx + (font\getWidth text), cy + 22
+
+    text = "[Z] BUY SHEEP: "
+    .setColor 0, 0, 0
+    .print text, cx, cy + 44
+
+    .setColor 255, 255, 0
+    .print "#{game.sheep_cost}$", cx + (font\getWidth text), cy + 44
+
+    text = "[X] BUY AMMO: "
+    .setColor 0, 0, 0
+    .print text, cx, cy + 60
+
+    .setColor 255, 255, 0
+    .print "#{game.ammo_cost}$", cx + (font\getWidth text), cy + 60
 
 ----------------------------------
 -- load level from image data

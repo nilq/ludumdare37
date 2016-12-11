@@ -81,6 +81,24 @@ do
         if a then
           self.currency = self.currency + a
         end
+      elseif key == "z" then
+        do
+          local _with_0 = game
+          if not (self.currency - _with_0.sheep_cost < 0) then
+            self.currency = self.currency - _with_0.sheep_cost
+            _with_0.make_entity("sheep", (math.random(0, _with_0.world_w)), math.random(0, _with_0.world_h))
+          end
+          return _with_0
+        end
+      elseif key == "x" then
+        do
+          local _with_0 = game
+          if not (self.currency - _with_0.ammo_cost < 0) then
+            self.currency = self.currency - _with_0.ammo_cost
+            self.tools[1].ammo = self.tools[1].ammo + 5
+          end
+          return _with_0
+        end
       else
         local n = tonumber(key)
         if n then

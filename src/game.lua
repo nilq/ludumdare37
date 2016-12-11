@@ -14,7 +14,9 @@ game = {
   wave_thugs = 0,
   t = 4,
   wave_t = 4,
-  new_wave = true
+  new_wave = true,
+  sheep_cost = 500,
+  ammo_cost = 300
 }
 game.load = function()
   do
@@ -212,6 +214,16 @@ game.draw_hud = function()
     _with_0.print(text, cx, cy + 22)
     _with_0.setColor(255, 255, 0)
     _with_0.print("(living)sheep", cx + (font:getWidth(text)), cy + 22)
+    text = "[Z] BUY SHEEP: "
+    _with_0.setColor(0, 0, 0)
+    _with_0.print(text, cx, cy + 44)
+    _with_0.setColor(255, 255, 0)
+    _with_0.print(tostring(game.sheep_cost) .. "$", cx + (font:getWidth(text)), cy + 44)
+    text = "[X] BUY AMMO: "
+    _with_0.setColor(0, 0, 0)
+    _with_0.print(text, cx, cy + 60)
+    _with_0.setColor(255, 255, 0)
+    _with_0.print(tostring(game.ammo_cost) .. "$", cx + (font:getWidth(text)), cy + 60)
     return _with_0
   end
 end

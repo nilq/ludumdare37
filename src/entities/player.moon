@@ -117,6 +117,21 @@ class
       a = @tools[@current]\fire!
 
       @currency += a if a
+    elseif key == "z" -- sheep
+      with game
+        unless @currency - .sheep_cost < 0
+          @currency -= .sheep_cost
+
+          .make_entity "sheep", (math.random 0, .world_w), math.random 0, .world_h
+    elseif key == "x" -- ammo
+      with game
+        unless @currency - .ammo_cost < 0
+          @currency -= .ammo_cost
+
+          ----------------------------------
+          -- tfw you code 'slam'
+          ----------------------------------
+          @tools[1].ammo += 5
     else
       n = tonumber key
       if n
