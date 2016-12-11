@@ -17,17 +17,17 @@ do
       self.t = self.t + dt
       local _list_0 = self.leaders
       for _index_0 = 1, #_list_0 do
-        local t, i = _list_0[_index_0]
+        local t, _ = _list_0[_index_0]
         if t == nil then
           break
         end
-        local a = math.atan2(self.y - t.y, self.x - t.x)
         local d = math.sqrt((self.x - t.x) ^ 2 + (self.y - t.y) ^ 2)
         if not (d > 72) then
+          self.a = math.atan2(self.y - t.y, self.x - t.x)
           self.lead = true
-          self.dx = self.dx - ((dt * (self.acc * math.cos(a)) / (d * 0.05)) / #self.leaders)
-          self.dy = self.dy - ((dt * (self.acc * math.sin(a)) / (d * 0.05)) / #self.leaders)
-          if d < 32 then
+          self.dx = self.dx - ((dt * (self.acc * math.cos(self.a))) / #self.leaders)
+          self.dy = self.dy - ((dt * (self.acc * math.sin(self.a))) / #self.leaders)
+          if d < 48 then
             self.scissor:fire()
           end
         end
@@ -69,6 +69,7 @@ do
         end
       end
       world:remove(self)
+      self.update = nil
       game.wave_thugs = game.wave_thugs - 1
     end,
     cut = function(self)
@@ -85,6 +86,7 @@ do
           end
         end
         world:remove(self)
+        self.update = nil
         game.wave_thugs = game.wave_thugs - 1
       end
     end,

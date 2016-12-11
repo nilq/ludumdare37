@@ -12,6 +12,8 @@ export game = {
   enemies: {}
   bullets: {}
 
+  pool: {}
+
   sprites: {}
 
   scale: 32
@@ -68,7 +70,15 @@ game.load = ->
       gun:             love.graphics.newImage "assets/sprites/guns/gun.png"
     }
 
+    import Enemy from require "src/entities"
+
     .load_level "assets/levels/room.png"
+    .init_stuff!
+
+    with game
+      for i = 1, 300
+        e = Enemy -1337, -1337, .sheep
+        table.insert .pool, e
 
 game.update = (dt) ->
   ----------------------------------
@@ -103,11 +113,10 @@ game.update = (dt) ->
       .t -= dt
 
       if .t <= 0
-        .wave += 1
+        .wave    += 1
         .new_wave = false
 
-        .load_level "assets/levels/waves/wave#{.wave}.png"
-        .init_stuff!
+        .load_wave!
 
 game.draw = ->
   with game
@@ -196,6 +205,24 @@ game.map_stuff = {
   "enemy":  {r: 0,   g: 0,   b: 255}
 }
 
+game.load_wave = ->
+  with game
+    .enemies = {}
+
+    for i = 1, .wave * 3
+      thug = .pool[(i + .wave * 3) % #.pool]
+
+      thug.dead  = false
+      thug.naked = false
+
+      thug.x = math.random -.world_w, .world_w * 2
+      thug.y = math.random -.world_h, .world_h * 2
+
+      table.insert .enemies, thug
+      table.insert .game_objects, thug
+
+      .wave_thugs += 1
+
 game.load_level = (path) ->
   with game
     .enemies = {}
@@ -214,13 +241,12 @@ game.load_level = (path) ->
 
 game.init_stuff = ->
   with game
-    for s, _ in *.sheep
-      s.leaders = .enemies
-      s.leaders[#s.leaders + 1] = .player
+    for s in *.sheep
+      table.insert s.leaders, .player if s.leaders
 
-    for e, _ in *.enemies
-      e.leaders = .sheep
-      e.leaders[#e.leaders + 1] = .player
+    for e in *.enemies
+      for s in *.sheep
+        table.insert e.leaders, .player
 
 game.make_entity = (id, x, y) ->
   import Player, Sheep, Enemy from require "src/entities"
@@ -240,7 +266,7 @@ game.make_entity = (id, x, y) ->
       table.insert game.sheep,        sheep
 
     when "enemy"
-      enemy = Enemy x, y
+      enemy = Enemy x, y, game.sheep
       table.insert game.game_objects, enemy
       table.insert game.enemies,      enemy
 

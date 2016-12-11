@@ -13,6 +13,8 @@ class
     @frc = 0.15
     @acc = 35
 
+    @type  = "sheep"
+
     @dir_t = 3     -- seconds between dir change
     @t     = 0     -- dynamic timer thingy
     @lead  = false -- being herded ...
@@ -89,6 +91,7 @@ class
       for i, v in ipairs game.sheep
         table.remove game.sheep, i if v == @
 
+      @update = nil
       world\remove @
 
   die: =>
@@ -98,6 +101,7 @@ class
     for i, v in ipairs game.sheep
       table.remove game.sheep, i if v == @
 
+    @update = nil
     world\remove @
 
   draw: =>

@@ -64,6 +64,7 @@ do
             table.remove(game.sheep, i)
           end
         end
+        self.update = nil
         return world:remove(self)
       end
     end,
@@ -75,6 +76,7 @@ do
           table.remove(game.sheep, i)
         end
       end
+      self.update = nil
       return world:remove(self)
     end,
     draw = function(self)
@@ -99,6 +101,7 @@ do
       self.dy = 0
       self.frc = 0.15
       self.acc = 35
+      self.type = "sheep"
       self.dir_t = 3
       self.t = 0
       self.lead = false

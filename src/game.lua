@@ -5,6 +5,7 @@ game = {
   sheep = { },
   enemies = { },
   bullets = { },
+  pool = { },
   sprites = { },
   scale = 32,
   world_w = 625,
@@ -46,7 +47,16 @@ game.load = function()
       scissor_cut = love.graphics.newImage("assets/sprites/guns/scissor_cut.png"),
       gun = love.graphics.newImage("assets/sprites/guns/gun.png")
     }
+    local Enemy
+    Enemy = require("src/entities").Enemy
     game.load_level("assets/levels/room.png")
+    game.init_stuff()
+    do
+      for i = 1, 300 do
+        local e = Enemy(-1337, -1337, game.sheep)
+        table.insert(game.pool, e)
+      end
+    end
     return game
   end
 end
@@ -100,8 +110,7 @@ game.update = function(dt)
       if game.t <= 0 then
         game.wave = game.wave + 1
         game.new_wave = false
-        game.load_level("assets/levels/waves/wave" .. tostring(game.wave) .. ".png")
-        game.init_stuff()
+        game.load_wave()
       end
     end
     return game
@@ -213,6 +222,22 @@ game.map_stuff = {
     b = 255
   }
 }
+game.load_wave = function()
+  do
+    game.enemies = { }
+    for i = 1, game.wave * 3 do
+      local thug = game.pool[(i + game.wave * 3) % #game.pool]
+      thug.dead = false
+      thug.naked = false
+      thug.x = math.random(-game.world_w, game.world_w * 2)
+      thug.y = math.random(-game.world_h, game.world_h * 2)
+      table.insert(game.enemies, thug)
+      table.insert(game.game_objects, thug)
+      game.wave_thugs = game.wave_thugs + 1
+    end
+    return game
+  end
+end
 game.load_level = function(path)
   do
     game.enemies = { }
@@ -235,15 +260,19 @@ game.init_stuff = function()
   do
     local _list_0 = game.sheep
     for _index_0 = 1, #_list_0 do
-      local s, _ = _list_0[_index_0]
-      s.leaders = game.enemies
-      s.leaders[#s.leaders + 1] = game.player
+      local s = _list_0[_index_0]
+      if s.leaders then
+        table.insert(s.leaders, game.player)
+      end
     end
     local _list_1 = game.enemies
     for _index_0 = 1, #_list_1 do
-      local e, _ = _list_1[_index_0]
-      e.leaders = game.sheep
-      e.leaders[#e.leaders + 1] = game.player
+      local e = _list_1[_index_0]
+      local _list_2 = game.sheep
+      for _index_1 = 1, #_list_2 do
+        local s = _list_2[_index_1]
+        table.insert(e.leaders, game.player)
+      end
     end
     return game
   end
@@ -264,7 +293,7 @@ game.make_entity = function(id, x, y)
     table.insert(game.game_objects, sheep)
     return table.insert(game.sheep, sheep)
   elseif "enemy" == _exp_0 then
-    local enemy = Enemy(x, y)
+    local enemy = Enemy(x, y, game.sheep)
     table.insert(game.game_objects, enemy)
     table.insert(game.enemies, enemy)
     game.wave_thugs = game.wave_thugs + 1

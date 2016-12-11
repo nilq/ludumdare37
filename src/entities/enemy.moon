@@ -39,7 +39,7 @@ class
     world\add @, @x, @y, @w, @h * 2
 
   update: (dt) =>
-    return if @dead
+    return if @dead or not world\hasItem @
 
     if @naked
       @grow_t -= dt
@@ -50,19 +50,19 @@ class
 
     @lead = false
     @t   += dt
-    for t, i in *@leaders
+    for t, _ in *@leaders
       break if t == nil
 
-      a = math.atan2 @y - t.y, @x - t.x
       d = math.sqrt (@x - t.x)^2 + (@y - t.y)^2
 
       unless d > 72
+        @a = math.atan2 @y - t.y, @x - t.x
         @lead = true
 
-        @dx -= (dt * (@acc * math.cos a) / (d * 0.05)) / #@leaders
-        @dy -= (dt * (@acc * math.sin a) / (d * 0.05)) / #@leaders
+        @dx -= (dt * (@acc * math.cos @a)) / #@leaders
+        @dy -= (dt * (@acc * math.sin @a)) / #@leaders
 
-        if d < 32
+        if d < 48
           @scissor\fire!
 
     unless @lead
@@ -98,7 +98,7 @@ class
       table.remove game.enemies, i if v == @
 
     world\remove @
-
+    @update = nil
     game.wave_thugs -= 1
 
   cut: =>
@@ -115,6 +115,7 @@ class
         table.remove game.enemies, i if v == @
 
       world\remove @
+      @update = nil
       game.wave_thugs -= 1
 
   draw: =>
