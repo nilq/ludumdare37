@@ -13,7 +13,7 @@ class
     @dy = 0
 
     @frc = 0.15
-    @acc = 35
+    @acc = 45
 
     @dir_t = 3     -- seconds between dir change
     @t     = 0     -- dynamic timer thingy
@@ -31,15 +31,22 @@ class
     ----------------------------------
     -- easter egg. easter egg right here.. idk
     ----------------------------------
-    @grow_time = 1000
+    @grow_time = 100
     @grow_t    = 0
 
     @hor_dir = 1
 
     world\add @, @x, @y, @w, @h * 2
 
+  reset: =>
+    @dead  = false
+    @naked = false
+    @sprite = game.sprites.thug
+
+    world\add @, @x, @y, @w, @h * 2
+
   update: (dt) =>
-    return if @dead or not world\hasItem @
+    return if @dead
 
     if @naked
       @grow_t -= dt
@@ -50,19 +57,19 @@ class
 
     @lead = false
     @t   += dt
-    for t, _ in *@leaders
+    for t, _ in *game.sheep
       break if t == nil
 
       d = math.sqrt (@x - t.x)^2 + (@y - t.y)^2
 
-      unless d > 72
+      unless d > 80
         @a = math.atan2 @y - t.y, @x - t.x
         @lead = true
 
-        @dx -= (dt * (@acc * math.cos @a)) / #@leaders
-        @dy -= (dt * (@acc * math.sin @a)) / #@leaders
+        @dx -= (dt * (@acc * math.cos @a)) * dt * 2
+        @dy -= (dt * (@acc * math.sin @a)) * dt * 2
 
-        if d < 48
+        if d < 32
           @scissor\fire!
 
     unless @lead

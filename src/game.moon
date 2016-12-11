@@ -117,6 +117,7 @@ game.update = (dt) ->
         .new_wave = false
 
         .load_wave!
+        .init_stuff!
 
 game.draw = ->
   with game
@@ -212,11 +213,9 @@ game.load_wave = ->
     for i = 1, .wave * 3
       thug = .pool[(i + .wave * 3) % #.pool]
 
-      thug.dead  = false
-      thug.naked = false
+      thug\reset! if thug.dead -- also adds to world
 
-      thug.x = math.random -.world_w, .world_w * 2
-      thug.y = math.random -.world_h, .world_h * 2
+      world\update thug, (math.random -.world_w, .world_w * 2), math.random -.world_h, .world_h * 2
 
       table.insert .enemies, thug
       table.insert .game_objects, thug
@@ -242,11 +241,12 @@ game.load_level = (path) ->
 game.init_stuff = ->
   with game
     for s in *.sheep
-      table.insert s.leaders, .player if s.leaders
+      s.leaders = {}
+      table.insert s.leaders, .player
 
     for e in *.enemies
-      for s in *.sheep
-        table.insert e.leaders, .player
+      e.leaders = .sheep
+      table.insert e.leaders, .player
 
 game.make_entity = (id, x, y) ->
   import Player, Sheep, Enemy from require "src/entities"

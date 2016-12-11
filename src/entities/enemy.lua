@@ -2,6 +2,12 @@ do
   local _class_0
   local Scissor
   local _base_0 = {
+    reset = function(self)
+      self.dead = false
+      self.naked = false
+      self.sprite = game.sprites.thug
+      return world:add(self, self.x, self.y, self.w, self.h * 2)
+    end,
     update = function(self, dt)
       if self.dead then
         return 
@@ -15,19 +21,19 @@ do
       end
       self.lead = false
       self.t = self.t + dt
-      local _list_0 = self.leaders
+      local _list_0 = game.sheep
       for _index_0 = 1, #_list_0 do
         local t, _ = _list_0[_index_0]
         if t == nil then
           break
         end
         local d = math.sqrt((self.x - t.x) ^ 2 + (self.y - t.y) ^ 2)
-        if not (d > 72) then
+        if not (d > 80) then
           self.a = math.atan2(self.y - t.y, self.x - t.x)
           self.lead = true
-          self.dx = self.dx - ((dt * (self.acc * math.cos(self.a))) / #self.leaders)
-          self.dy = self.dy - ((dt * (self.acc * math.sin(self.a))) / #self.leaders)
-          if d < 48 then
+          self.dx = self.dx - ((dt * (self.acc * math.cos(self.a))) * dt * 2)
+          self.dy = self.dy - ((dt * (self.acc * math.sin(self.a))) * dt * 2)
+          if d < 32 then
             self.scissor:fire()
           end
         end
@@ -111,7 +117,7 @@ do
       self.dx = 0
       self.dy = 0
       self.frc = 0.15
-      self.acc = 35
+      self.acc = 45
       self.dir_t = 3
       self.t = 0
       self.lead = false
@@ -120,7 +126,7 @@ do
       self.enemy = true
       self.dead = false
       self.naked = false
-      self.grow_time = 1000
+      self.grow_time = 100
       self.grow_t = 0
       self.hor_dir = 1
       return world:add(self, self.x, self.y, self.w, self.h * 2)

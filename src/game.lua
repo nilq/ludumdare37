@@ -111,6 +111,7 @@ game.update = function(dt)
         game.wave = game.wave + 1
         game.new_wave = false
         game.load_wave()
+        game.init_stuff()
       end
     end
     return game
@@ -227,10 +228,10 @@ game.load_wave = function()
     game.enemies = { }
     for i = 1, game.wave * 3 do
       local thug = game.pool[(i + game.wave * 3) % #game.pool]
-      thug.dead = false
-      thug.naked = false
-      thug.x = math.random(-game.world_w, game.world_w * 2)
-      thug.y = math.random(-game.world_h, game.world_h * 2)
+      if thug.dead then
+        thug:reset()
+      end
+      world:update(thug, (math.random(-game.world_w, game.world_w * 2)), math.random(-game.world_h, game.world_h * 2))
       table.insert(game.enemies, thug)
       table.insert(game.game_objects, thug)
       game.wave_thugs = game.wave_thugs + 1
@@ -261,18 +262,14 @@ game.init_stuff = function()
     local _list_0 = game.sheep
     for _index_0 = 1, #_list_0 do
       local s = _list_0[_index_0]
-      if s.leaders then
-        table.insert(s.leaders, game.player)
-      end
+      s.leaders = { }
+      table.insert(s.leaders, game.player)
     end
     local _list_1 = game.enemies
     for _index_0 = 1, #_list_1 do
       local e = _list_1[_index_0]
-      local _list_2 = game.sheep
-      for _index_1 = 1, #_list_2 do
-        local s = _list_2[_index_1]
-        table.insert(e.leaders, game.player)
-      end
+      e.leaders = game.sheep
+      table.insert(e.leaders, game.player)
     end
     return game
   end
