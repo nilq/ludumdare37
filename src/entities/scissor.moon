@@ -51,7 +51,7 @@ class
     @cut = true
 
     for s, _ in *game.sheep
-      break if s == @mother
+      continue if s == @mother
 
       d = math.sqrt (@x - (s.x + s.w / 4))^2 + (@y - s.y)^2
 
@@ -60,7 +60,7 @@ class
         return
 
     for s, _ in *game.enemies
-      break if s == @mother
+      continue if s == @mother
 
       d = math.sqrt (@x - (s.x + s.w / 4))^2 + (@y - s.y)^2
 

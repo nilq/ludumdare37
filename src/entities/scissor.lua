@@ -40,26 +40,42 @@ do
       self.cut = true
       local _list_0 = game.sheep
       for _index_0 = 1, #_list_0 do
-        local s, _ = _list_0[_index_0]
-        if s == self.mother then
+        local _continue_0 = false
+        repeat
+          local s, _ = _list_0[_index_0]
+          if s == self.mother then
+            _continue_0 = true
+            break
+          end
+          local d = math.sqrt((self.x - (s.x + s.w / 4)) ^ 2 + (self.y - s.y) ^ 2)
+          if d < s.w then
+            s:cut()
+            return 
+          end
+          _continue_0 = true
+        until true
+        if not _continue_0 then
           break
-        end
-        local d = math.sqrt((self.x - (s.x + s.w / 4)) ^ 2 + (self.y - s.y) ^ 2)
-        if d < s.w then
-          s:cut()
-          return 
         end
       end
       local _list_1 = game.enemies
       for _index_0 = 1, #_list_1 do
-        local s, _ = _list_1[_index_0]
-        if s == self.mother then
+        local _continue_0 = false
+        repeat
+          local s, _ = _list_1[_index_0]
+          if s == self.mother then
+            _continue_0 = true
+            break
+          end
+          local d = math.sqrt((self.x - (s.x + s.w / 4)) ^ 2 + (self.y - s.y) ^ 2)
+          if d < s.h then
+            s:cut()
+            return 
+          end
+          _continue_0 = true
+        until true
+        if not _continue_0 then
           break
-        end
-        local d = math.sqrt((self.x - (s.x + s.w / 4)) ^ 2 + (self.y - s.y) ^ 2)
-        if d < s.h then
-          s:cut()
-          return 
         end
       end
     end

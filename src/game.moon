@@ -73,7 +73,6 @@ game.load = ->
     import Enemy from require "src/entities"
 
     .load_level "assets/levels/room.png"
-    .init_stuff!
 
     with game
       for i = 1, 300
@@ -117,7 +116,6 @@ game.update = (dt) ->
         .new_wave = false
 
         .load_wave!
-        .init_stuff!
 
 game.draw = ->
   with game
@@ -215,7 +213,7 @@ game.load_wave = ->
 
       thug\reset! if thug.dead -- also adds to world
 
-      world\update thug, (math.random -.world_w, .world_w * 2), math.random -.world_h, .world_h * 2
+      world\update thug, (math.random 0, .world_w), math.random 0, .world_h
 
       table.insert .enemies, thug
       table.insert .game_objects, thug
@@ -238,16 +236,6 @@ game.load_level = (path) ->
           if r == v.r and g == v.g and b == v.b
             .make_entity k, .scale * rx, .scale * ry
 
-game.init_stuff = ->
-  with game
-    for s in *.sheep
-      s.leaders = {}
-      table.insert s.leaders, .player
-
-    for e in *.enemies
-      e.leaders = .sheep
-      table.insert e.leaders, .player
-
 game.make_entity = (id, x, y) ->
   import Player, Sheep, Enemy from require "src/entities"
 
@@ -259,9 +247,13 @@ game.make_entity = (id, x, y) ->
       ----------------------------------
       game.player = player
       table.insert game.game_objects, player
+      ----------------------------------
+      -- dirty hack plz
+      ----------------------------------
+      table.insert game.sheep, player -- lel
 
     when "sheep"
-      sheep = Sheep x, y
+      sheep = Sheep x, y, {game.player}
       table.insert game.game_objects, sheep
       table.insert game.sheep,        sheep
 

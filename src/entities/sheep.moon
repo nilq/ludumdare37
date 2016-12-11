@@ -5,7 +5,7 @@ class
   ----------------------------------
   new: (@x, @y, @leaders={}) =>
     @sprite = game.sprites.sheep
-    @w, @h  = @sprite\getWidth!, @sprite\getHeight! * .5
+    @w, @h  = @sprite\getWidth!, @sprite\getHeight! * 0.5
 
     @dx = 0
     @dy = 0
@@ -107,4 +107,4 @@ class
   draw: =>
     with love.graphics
       .setColor 255, 255, 255
-      .draw @sprite, @x + @w / 2, @y + @h / 2, 0, -@hor_dir, 1, @w / 2, @h / 2
+      .draw @sprite, @x, @y + @h / 2, 0, -@hor_dir, 1, @w / 2, @h / 2

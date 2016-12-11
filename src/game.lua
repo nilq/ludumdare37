@@ -50,7 +50,6 @@ game.load = function()
     local Enemy
     Enemy = require("src/entities").Enemy
     game.load_level("assets/levels/room.png")
-    game.init_stuff()
     do
       for i = 1, 300 do
         local e = Enemy(-1337, -1337, game.sheep)
@@ -111,7 +110,6 @@ game.update = function(dt)
         game.wave = game.wave + 1
         game.new_wave = false
         game.load_wave()
-        game.init_stuff()
       end
     end
     return game
@@ -231,7 +229,7 @@ game.load_wave = function()
       if thug.dead then
         thug:reset()
       end
-      world:update(thug, (math.random(-game.world_w, game.world_w * 2)), math.random(-game.world_h, game.world_h * 2))
+      world:update(thug, (math.random(0, game.world_w)), math.random(0, game.world_h))
       table.insert(game.enemies, thug)
       table.insert(game.game_objects, thug)
       game.wave_thugs = game.wave_thugs + 1
@@ -257,23 +255,6 @@ game.load_level = function(path)
     return game
   end
 end
-game.init_stuff = function()
-  do
-    local _list_0 = game.sheep
-    for _index_0 = 1, #_list_0 do
-      local s = _list_0[_index_0]
-      s.leaders = { }
-      table.insert(s.leaders, game.player)
-    end
-    local _list_1 = game.enemies
-    for _index_0 = 1, #_list_1 do
-      local e = _list_1[_index_0]
-      e.leaders = game.sheep
-      table.insert(e.leaders, game.player)
-    end
-    return game
-  end
-end
 game.make_entity = function(id, x, y)
   local Player, Sheep, Enemy
   do
@@ -284,9 +265,12 @@ game.make_entity = function(id, x, y)
   if "player" == _exp_0 then
     local player = Player(x, y, 21, 21)
     game.player = player
-    return table.insert(game.game_objects, player)
+    table.insert(game.game_objects, player)
+    return table.insert(game.sheep, player)
   elseif "sheep" == _exp_0 then
-    local sheep = Sheep(x, y)
+    local sheep = Sheep(x, y, {
+      game.player
+    })
     table.insert(game.game_objects, sheep)
     return table.insert(game.sheep, sheep)
   elseif "enemy" == _exp_0 then

@@ -83,7 +83,7 @@ do
       do
         local _with_0 = love.graphics
         _with_0.setColor(255, 255, 255)
-        _with_0.draw(self.sprite, self.x + self.w / 2, self.y + self.h / 2, 0, -self.hor_dir, 1, self.w / 2, self.h / 2)
+        _with_0.draw(self.sprite, self.x, self.y + self.h / 2, 0, -self.hor_dir, 1, self.w / 2, self.h / 2)
         return _with_0
       end
     end
@@ -96,7 +96,7 @@ do
       end
       self.x, self.y, self.leaders = x, y, leaders
       self.sprite = game.sprites.sheep
-      self.w, self.h = self.sprite:getWidth(), self.sprite:getHeight() * .5
+      self.w, self.h = self.sprite:getWidth(), self.sprite:getHeight() * 0.5
       self.dx = 0
       self.dy = 0
       self.frc = 0.15

@@ -6,6 +6,7 @@ do
       self.dead = false
       self.naked = false
       self.sprite = game.sprites.thug
+      self.leaders = { }
       return world:add(self, self.x, self.y, self.w, self.h * 2)
     end,
     update = function(self, dt)
@@ -29,10 +30,10 @@ do
         end
         local d = math.sqrt((self.x - t.x) ^ 2 + (self.y - t.y) ^ 2)
         if not (d > 80) then
-          self.a = math.atan2(self.y - t.y, self.x - t.x)
+          self.a = math.atan2(self.y - t.y, self.x - (t.x + t.w / 4))
           self.lead = true
-          self.dx = self.dx - ((dt * (self.acc * math.cos(self.a))) * dt * 2)
-          self.dy = self.dy - ((dt * (self.acc * math.sin(self.a))) * dt * 2)
+          self.dx = self.dx - (dt * (self.acc * math.cos(self.a)))
+          self.dy = self.dy - (dt * (self.acc * math.sin(self.a)))
           if d < 32 then
             self.scissor:fire()
           end
@@ -43,8 +44,8 @@ do
           self.a = math.random(0, 360)
           self.t = 0
         end
-        self.dx = self.dx + (dt * (self.acc / 5) * math.cos(self.a))
-        self.dy = self.dy + (dt * (self.acc / 5) * math.sin(self.a))
+        self.dx = self.dx + (dt * (self.acc) * math.cos(self.a))
+        self.dy = self.dy + (dt * (self.acc) * math.sin(self.a))
       end
       if not (0 == math.sign(self.dx)) then
         self.hor_dir = math.sign(self.dx)
@@ -117,7 +118,7 @@ do
       self.dx = 0
       self.dy = 0
       self.frc = 0.15
-      self.acc = 45
+      self.acc = 7
       self.dir_t = 3
       self.t = 0
       self.lead = false

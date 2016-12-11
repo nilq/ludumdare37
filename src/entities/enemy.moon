@@ -13,7 +13,7 @@ class
     @dy = 0
 
     @frc = 0.15
-    @acc = 45
+    @acc = 7
 
     @dir_t = 3     -- seconds between dir change
     @t     = 0     -- dynamic timer thingy
@@ -43,6 +43,8 @@ class
     @naked = false
     @sprite = game.sprites.thug
 
+    @leaders = {}
+
     world\add @, @x, @y, @w, @h * 2
 
   update: (dt) =>
@@ -61,13 +63,12 @@ class
       break if t == nil
 
       d = math.sqrt (@x - t.x)^2 + (@y - t.y)^2
-
       unless d > 80
-        @a = math.atan2 @y - t.y, @x - t.x
+        @a = math.atan2 @y - t.y, @x - (t.x + t.w / 4)
         @lead = true
 
-        @dx -= (dt * (@acc * math.cos @a)) * dt * 2
-        @dy -= (dt * (@acc * math.sin @a)) * dt * 2
+        @dx -= (dt * (@acc * math.cos @a))
+        @dy -= (dt * (@acc * math.sin @a))
 
         if d < 32
           @scissor\fire!
@@ -77,8 +78,8 @@ class
         @a = math.random 0, 360 -- random angle
         @t = 0
 
-      @dx += dt * (@acc / 5) * math.cos @a
-      @dy += dt * (@acc / 5) * math.sin @a
+      @dx += dt * (@acc) * math.cos @a
+      @dy += dt * (@acc) * math.sin @a
 
     @hor_dir = math.sign @dx unless 0 == math.sign @dx
 
